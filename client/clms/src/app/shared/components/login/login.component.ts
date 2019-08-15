@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../../classes/user';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  user: User = {username: null, password: null};
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+
   }
 
+  login(user: any) {
+    console.log(this.user);
+    throw new Error('Method not fully implemented.');
+  }
 }
