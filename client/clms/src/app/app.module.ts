@@ -7,6 +7,7 @@ import { MainComponent } from './main-app/components/main/main.component';
 import { HomeComponent } from './main-app/components/home/home.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { LogoutComponent } from './shared/components/logout/logout.component';
+import { UserDataService } from './shared/services/user-data/user-data.service';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { LogoutComponent } from './shared/components/logout/logout.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [UserDataService],
   bootstrap: [MainComponent]
 })
 export class AppModule { }
