@@ -1,8 +1,40 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { HomeComponent } from './main-app/components/home/home.component';
+import { LoginComponent } from './shared/components/login/login.component';
+import { AdminComponent } from './admin/components/main/main.component';
+import { UsersComponent } from './user/components/main/main.component';
+import { AuthGuardService as AuthGuard } from './shared/services/guards/auth-guard.service';
+import { RoleGuardService as RoleGuard } from './shared/services/guards/role-guard.service';
+import { AdminHomeComponent } from './admin/components/home/home.component';
+import { UserHomeComponent } from './user/components/home/home.component';
+import { AdminLogoutComponent } from './admin/components/logout/logout.component';
+import { UserLogoutComponent } from './user/components/logout/logout.component';
 
-const routes: Routes = [];
+
+
+const routes: Routes = [
+  {path: 'login', component: LoginComponent},
+  {path: 'admin', component: AdminComponent, canActivate: [AuthGuard],
+    children: [
+      {path: 'home', component: AdminHomeComponent, canActivate: [RoleGuard], data: {
+        expectedRole: 'admin'}
+      },
+      {path: 'logout', component: AdminLogoutComponent}
+    ]
+  },
+  {path: 'user', component: UsersComponent, canActivate: [AuthGuard],
+    children: [
+      {path: 'home', component: UserHomeComponent, canActivate: [RoleGuard], data: {
+        expectedRole: 'user'}
+      },
+      {path: 'logout', component: UserLogoutComponent}
+    ]
+  },
+  {path: '', component: HomeComponent},
+  {path: '**', redirectTo: '/'}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
