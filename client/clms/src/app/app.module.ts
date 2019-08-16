@@ -10,6 +10,11 @@ import { LogoutComponent } from './shared/components/logout/logout.component';
 import { UserDataService } from './shared/services/user-data/user-data.service';
 import { AdminComponent } from './admin/components/main/main.component';
 import { UsersComponent } from './user/components/main/main.component';
+import { AdminHomeComponent } from './admin/components/home/home.component';
+import { UserHomeComponent } from './user/components/home/home.component';
+import { AdminLogoutComponent } from './admin/components/logout/logout.component';
+import { UserLogoutComponent } from './user/components/logout/logout.component';
+
 
 
 
@@ -20,7 +25,11 @@ import { UsersComponent } from './user/components/main/main.component';
     LoginComponent,
     LogoutComponent,
     AdminComponent,
-    UsersComponent
+    AdminHomeComponent,
+    AdminLogoutComponent,
+    UsersComponent,
+    UserHomeComponent,
+    UserLogoutComponent
   ],
   imports: [
     BrowserModule,

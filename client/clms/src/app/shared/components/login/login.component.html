@@ -4,7 +4,7 @@
       <input #uName="ngModel" name="username" type="text" placeholder="Username" [(ngModel)]="user.username" [ngModelOptions]="{standalone:true}" class="form-control" required/>
       <div *ngIf="uName.invalid && (uName.dirty || uName.touched)"
         class="alert alert-danger">
-        <div *ngIf="uName.errors.required">
+        <div *ngIf="uName.hasError('required')">
           Username is required.
         </div>
       </div>
@@ -14,7 +14,7 @@
       <input #uPass="ngModel" name="password" type="password" placeholder="Password" [(ngModel)]="user.password" [ngModelOptions]="{standalone:true}" class="form-control" required/>
       <div *ngIf="uPass.invalid && (uPass.dirty || uPass.touched)"
       class="alert alert-danger">
-      <div *ngIf="uPass.errors.required">
+      <div *ngIf="uPass.hasError('required')">
         Password is required.
       </div>
     </div>

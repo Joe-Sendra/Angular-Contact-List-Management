@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   login(user: any) {
     if (this.userData.loginUser(this.user) === true) {
-      this.user = this.userData.getUser(this.user);
+      this.user = this.userData.getCurrentUser();
       // Route to component based on role
       this.router.navigate(['/' + this.user.usertype]);
     }

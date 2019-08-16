@@ -17,6 +17,16 @@ export class UserDataService {
      usertype: 'user',
      login: {status: false}}
   ];
+
+  private currentUser: User = {
+    username: null,
+    password: null,
+    usertype: null,
+    login: {
+      status: false
+    }
+  };
+
   constructor() { }
 
   loginUser(userLookup: User): boolean {
@@ -25,6 +35,7 @@ export class UserDataService {
         if (user.password === userLookup.password) {
           // User and password match
           user.login.status = true;
+          this.currentUser = user;
           return true;
         }
       }
@@ -33,11 +44,19 @@ export class UserDataService {
     return false;
   }
 
-  getUser(userLookup: User): User {
-    for (const user of this.sampleUsers) {
-      if (user.username === userLookup.username) {
-        return user;
+  logoutUser(): void {
+    this.currentUser = {
+      username: null,
+      password: null,
+      usertype: null,
+      login: {
+        status: false
       }
-    }
+    };
   }
+
+  getCurrentUser(): User {
+    return this.currentUser;
+  }
+
 }
