@@ -8,6 +8,9 @@ import { HomeComponent } from './main-app/components/home/home.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { LogoutComponent } from './shared/components/logout/logout.component';
 import { UserDataService } from './shared/services/user-data/user-data.service';
+import { AdminComponent } from './admin/components/main/main.component';
+import { UsersComponent } from './user/components/main/main.component';
+
 
 
 @NgModule({
@@ -15,7 +18,9 @@ import { UserDataService } from './shared/services/user-data/user-data.service';
     MainComponent,
     HomeComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    AdminComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

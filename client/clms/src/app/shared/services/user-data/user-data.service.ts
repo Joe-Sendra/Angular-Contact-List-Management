@@ -20,16 +20,24 @@ export class UserDataService {
   constructor() { }
 
   loginUser(userLookup: User): boolean {
-    console.log(userLookup.username);
     for (const user of this.sampleUsers) {
-        if (user.username === userLookup.username) {
-          if (user.password === userLookup.password) {
-            // User and password match
-            return true;
-          }
+      if (user.username === userLookup.username) {
+        if (user.password === userLookup.password) {
+          // User and password match
+          user.login.status = true;
+          return true;
         }
+      }
     }
     // User and or password not found or do not match
     return false;
+  }
+
+  getUser(userLookup: User): User {
+    for (const user of this.sampleUsers) {
+      if (user.username === userLookup.username) {
+        return user;
+      }
+    }
   }
 }

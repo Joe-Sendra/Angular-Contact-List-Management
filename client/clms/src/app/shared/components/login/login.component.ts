@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../classes/user';
 import { UserDataService } from '../../services/user-data/user-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,15 +11,17 @@ import { UserDataService } from '../../services/user-data/user-data.service';
 export class LoginComponent implements OnInit {
 
   user: User = {username: null, password: null, usertype: null, login: {status: null}};
-  constructor(private userData: UserDataService) { }
+  constructor(private userData: UserDataService, private router: Router) { }
 
   ngOnInit(): void {
 
   }
 
   login(user: any) {
-    console.log(this.user);
-    console.log(this.userData.loginUser(this.user));
-    // throw new Error('Method not fully implemented.');
+    if (this.userData.loginUser(this.user) === true) {
+      this.user = this.userData.getUser(this.user);
+      // Route to component based on role
+      this.router.navigate(['/' + this.user.usertype]);
+    }
   }
 }
