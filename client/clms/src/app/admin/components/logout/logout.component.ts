@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-admin-logout',
   template: '',
-  styleUrls: ['./logout.component.css']
+  styles: ['']
 })
 export class AdminLogoutComponent implements OnInit {
 

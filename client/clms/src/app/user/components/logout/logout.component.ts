@@ -5,7 +5,7 @@ import { UserDataService } from 'src/app/shared/services/user-data/user-data.ser
 @Component({
   selector: 'app-user-logout',
   template: '',
-  styleUrls: ['./logout.component.css']
+  styles: ['']
 })
 export class UserLogoutComponent implements OnInit {
 
