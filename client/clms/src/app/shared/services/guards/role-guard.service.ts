@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 import { UserDataService } from '../user-data/user-data.service';
-import { User } from '../../classes/user';
+import { IUser } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleGuardService implements CanActivate {
 
-  user: User;
+  user: IUser;
 
   constructor(public auth: AuthService, public router: Router, private userData: UserDataService) { }
 

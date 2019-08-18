@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserDataService } from 'src/app/shared/services/user-data/user-data.service';
-import { User } from 'src/app/shared/classes/user';
+import { IUser } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-admin-main',
@@ -9,7 +9,7 @@ import { User } from 'src/app/shared/classes/user';
   styleUrls: ['./main.component.css']
 })
 export class AdminComponent implements OnInit {
-  user: User;
+  user: IUser;
   constructor(private router: Router, private userData: UserDataService) { }
 
   ngOnInit() {
