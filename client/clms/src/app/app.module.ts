@@ -14,6 +14,8 @@ import { AdminHomeComponent } from './admin/components/home/home.component';
 import { UserHomeComponent } from './user/components/home/home.component';
 import { AdminLogoutComponent } from './admin/components/logout/logout.component';
 import { UserLogoutComponent } from './user/components/logout/logout.component';
+import { RegisterComponent } from './shared/components/register/register.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 
 
@@ -29,7 +31,9 @@ import { UserLogoutComponent } from './user/components/logout/logout.component';
     AdminLogoutComponent,
     UsersComponent,
     UserHomeComponent,
-    UserLogoutComponent
+    UserLogoutComponent,
+    RegisterComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

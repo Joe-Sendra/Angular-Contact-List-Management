@@ -11,10 +11,13 @@ import { AdminHomeComponent } from './admin/components/home/home.component';
 import { UserHomeComponent } from './user/components/home/home.component';
 import { AdminLogoutComponent } from './admin/components/logout/logout.component';
 import { UserLogoutComponent } from './user/components/logout/logout.component';
+import { RegisterComponent } from './shared/components/register/register.component';
 
 
 
 const routes: Routes = [
+  {path: '', component: HomeComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard],
     children: [
@@ -32,7 +35,6 @@ const routes: Routes = [
       {path: 'logout', component: UserLogoutComponent}
     ]
   },
-  {path: '', component: HomeComponent},
   {path: '**', redirectTo: '/'}
 ];
 
