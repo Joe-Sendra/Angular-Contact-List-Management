@@ -1,0 +1,18 @@
+[
+    {
+        "username": "admin",
+        "password": "admin",
+        "usertype": "admin",
+        "login": {
+            "status": false
+        }
+    },
+    {
+        "username": "user",
+        "password": "user",
+        "usertype": "user",
+        "login": {
+            "status": false
+        }
+    }
+]

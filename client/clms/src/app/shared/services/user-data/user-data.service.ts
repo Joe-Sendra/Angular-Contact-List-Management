@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { User } from '../../classes/user';
+import { IUser } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
 
-  private sampleUsers: User[] = [
+  private sampleUsers: IUser[] = [
     {username: 'admin',
      password: 'admin',
      usertype: 'admin',
@@ -18,7 +18,7 @@ export class UserDataService {
      login: {status: false}}
   ];
 
-  private currentUser: User = {
+  private currentUser: IUser = {
     username: null,
     password: null,
     usertype: null,
@@ -29,7 +29,7 @@ export class UserDataService {
 
   constructor() { }
 
-  loginUser(userLookup: User): boolean {
+  loginUser(userLookup: IUser): boolean {
     for (const user of this.sampleUsers) {
       if (user.username === userLookup.username) {
         if (user.password === userLookup.password) {
@@ -55,7 +55,7 @@ export class UserDataService {
     };
   }
 
-  getCurrentUser(): User {
+  getCurrentUser(): IUser {
     return this.currentUser;
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../classes/user';
+import { IUser } from '../../models/user';
 import { UserDataService } from '../../services/user-data/user-data.service';
 import { Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  user: User = {username: null, password: null, usertype: null, login: {status: null}};
+  user: IUser = {username: null, password: null, usertype: null, login: {status: null}};
   constructor(private userData: UserDataService, private router: Router) { }
 
   ngOnInit(): void {
