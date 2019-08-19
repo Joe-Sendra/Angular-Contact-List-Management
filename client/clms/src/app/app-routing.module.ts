@@ -9,8 +9,6 @@ import { AuthGuardService as AuthGuard } from './shared/services/guards/auth-gua
 import { RoleGuardService as RoleGuard } from './shared/services/guards/role-guard.service';
 import { AdminHomeComponent } from './admin/components/home/home.component';
 import { UserHomeComponent } from './user/components/home/home.component';
-import { AdminLogoutComponent } from './admin/components/logout/logout.component';
-import { UserLogoutComponent } from './user/components/logout/logout.component';
 import { RegisterComponent } from './shared/components/register/register.component';
 
 
@@ -24,7 +22,7 @@ const routes: Routes = [
       {path: 'home', component: AdminHomeComponent, canActivate: [RoleGuard], data: {
         expectedRole: 'admin'}
       },
-      {path: 'logout', component: AdminLogoutComponent}
+      {path: 'logout', component: LoginComponent}
     ]
   },
   {path: 'user', component: UsersComponent, canActivate: [AuthGuard],
@@ -32,7 +30,7 @@ const routes: Routes = [
       {path: 'home', component: UserHomeComponent, canActivate: [RoleGuard], data: {
         expectedRole: 'user'}
       },
-      {path: 'logout', component: UserLogoutComponent}
+      {path: 'logout', component: LoginComponent}
     ]
   },
   {path: '**', redirectTo: '/'}

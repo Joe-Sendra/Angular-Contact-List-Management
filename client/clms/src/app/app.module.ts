@@ -11,8 +11,6 @@ import { AdminComponent } from './admin/components/main/main.component';
 import { UsersComponent } from './user/components/main/main.component';
 import { AdminHomeComponent } from './admin/components/home/home.component';
 import { UserHomeComponent } from './user/components/home/home.component';
-import { AdminLogoutComponent } from './admin/components/logout/logout.component';
-import { UserLogoutComponent } from './user/components/logout/logout.component';
 import { RegisterComponent } from './shared/components/register/register.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { ValidateService } from './shared/services/validate/validate.service';
@@ -29,10 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     AdminComponent,
     AdminHomeComponent,
-    AdminLogoutComponent,
     UsersComponent,
     UserHomeComponent,
-    UserLogoutComponent,
     RegisterComponent,
     NavbarComponent
   ],
