@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main-app/components/main/main.component';
 import { HomeComponent } from './main-app/components/home/home.component';
 import { LoginComponent } from './shared/components/login/login.component';
-import { LogoutComponent } from './shared/components/logout/logout.component';
 import { UserDataService } from './shared/services/user-data/user-data.service';
 import { AdminComponent } from './admin/components/main/main.component';
 import { UsersComponent } from './user/components/main/main.component';
@@ -28,7 +27,6 @@ import { HttpClientModule } from '@angular/common/http';
     MainComponent,
     HomeComponent,
     LoginComponent,
-    LogoutComponent,
     AdminComponent,
     AdminHomeComponent,
     AdminLogoutComponent,
