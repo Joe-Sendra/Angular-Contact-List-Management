@@ -26,10 +26,11 @@ export class LoginComponent implements OnInit {
     this.authService.authenticateUser(user).subscribe(data => {
       if ((data as any).success) {
         this.authService.storeUserData(data.token, data.user);
-        console.log('TODO send message to user - You are now logged in');
-        console.log(data.token, data.user);
-        console.log('TODO: send user to appropriate view based on role');
-        this.router.navigate(['admin']);
+        if (data.user.role === 'admin') {
+          this.router.navigate(['admin']);
+        } else {
+          this.router.navigate(['user']);
+        }
       } else {
         console.log(data, 'TODO Send message to user not authenticated');
         this.router.navigate(['login']);

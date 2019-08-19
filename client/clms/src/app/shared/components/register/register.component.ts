@@ -27,16 +27,17 @@ export class RegisterComponent implements OnInit {
 
     // Required Fields
     if (!this.validateService.validateRegister(user)) {
-      console.log('Fill in all fields');
+      alert('Fill in all fields');
       return false;
     }
 
     // Register User
     this.authService.registerUser(user).subscribe(data => {
-      console.log('TODO: show success or error message to user');
       if ((data as any).success) {
+        alert('Username has been registered, please login');
         this.router.navigate(['/login']);
       } else {
+        alert('Unable to register user, please try again');
         this.router.navigate(['/register']);
       }
     });

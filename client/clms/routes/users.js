@@ -9,7 +9,8 @@ const User = require('../models/users');
 router.post('/register', (req, res, next) => {
     let newUser = new User({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        role: 'user'
     });
 
     User.addUser(newUser, (err, user) => {
@@ -43,7 +44,8 @@ router.post('/authenticate', (req, res, next) => {
                     token: `Bearer ${token}`,
                     user: {
                         id: user._id,
-                        username: user.username
+                        username: user.username,
+                        role: user.role
                     }
                 });
 
