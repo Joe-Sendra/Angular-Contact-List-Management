@@ -16,6 +16,9 @@ import { AdminLogoutComponent } from './admin/components/logout/logout.component
 import { UserLogoutComponent } from './user/components/logout/logout.component';
 import { RegisterComponent } from './shared/components/register/register.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { ValidateService } from './shared/services/validate/validate.service';
+import { AuthService } from './shared/services/auth/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -38,9 +41,10 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [UserDataService],
+  providers: [UserDataService, ValidateService, AuthService],
   bootstrap: [MainComponent]
 })
 export class AppModule { }
