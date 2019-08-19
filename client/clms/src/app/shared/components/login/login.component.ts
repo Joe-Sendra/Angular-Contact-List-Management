@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from '../../models/user';
-import { UserDataService } from '../../services/user-data/user-data.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +8,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  username: string;
+  password: string;
 
-  user: IUser = {username: null, password: null, usertype: null, login: {status: null}};
-  constructor(private userData: UserDataService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
 
   }
 
-  login(user: any) {
-    if (this.userData.loginUser(this.user) === true) {
-      this.user = this.userData.getCurrentUser();
-      // Route to component based on role
-      this.router.navigate(['/' + this.user.usertype]);
-    }
+  onLoginSubmit() {
+    const user = {
+      username: this.username,
+      password: this.password
+    };
+
+    this.authService.authenticateUser(user).subscribe(data => {
+      if ((data as any).success) {
+        this.authService.storeUserData(data.token, data.user);
+        console.log('TODO send message to user - You are now logged in');
+        console.log(data.token, data.user);
+        console.log('TODO: send user to appropriate view based on role');
+        this.router.navigate(['admin']);
+      } else {
+        console.log(data, 'TODO Send message to user not authenticated');
+        this.router.navigate(['login']);
+      }
+    });
   }
+
 }
