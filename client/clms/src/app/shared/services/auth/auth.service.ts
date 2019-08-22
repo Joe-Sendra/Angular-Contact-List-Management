@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { config } from '../../../config';
 // import { UserDataService } from '../user-data/user-data.service';
 // import { IUser } from '../../models/user';
 
@@ -18,13 +19,13 @@ export class AuthService {
      console.log('TODO: Need to verify user doesnt already exist');
      const headers = new HttpHeaders();
      headers.append('Content-Type', 'application/json');
-     return this.http.post('http://localhost:3000/users/register', user, {headers}).pipe(map((res) => res));
+     return this.http.post(`${config.apiUrl}/users/register`, user, {headers}).pipe(map((res) => res));
    }
 
    authenticateUser(user) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/users/authenticate', user, {headers}).pipe(map((res: any) => res));
+    return this.http.post(`${config.apiUrl}/users/authenticate`, user, {headers}).pipe(map((res: any) => res));
    }
 
    getProfile() {
@@ -32,7 +33,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:3000/users/profile', {headers}).pipe(map((res) => res));
+    return this.http.get(`${config.apiUrl}/users/profile`, {headers}).pipe(map((res) => res));
    }
 
    storeUserData(token, user) {
