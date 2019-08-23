@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main-app/components/main/main.component';
 import { HomeComponent } from './main-app/components/home/home.component';
 import { LoginComponent } from './shared/components/login/login.component';
-import { UserDataService } from './shared/services/user-data/user-data.service';
 import { AdminComponent } from './admin/components/main/main.component';
 import { UsersComponent } from './user/components/main/main.component';
 import { AdminHomeComponent } from './admin/components/home/home.component';
@@ -15,7 +14,9 @@ import { RegisterComponent } from './shared/components/register/register.compone
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { ValidateService } from './shared/services/validate/validate.service';
 import { AuthService } from './shared/services/auth/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthGuardService } from './shared/services/guards/auth-guard.service';
+import { TokenInterceptorService } from './shared/services/token-interceptor/token-interceptor.service';
 
 
 
@@ -38,7 +39,12 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [UserDataService, ValidateService, AuthService],
+  providers: [ValidateService, AuthService, AuthGuardService,
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+  }],
   bootstrap: [MainComponent]
 })
 export class AppModule { }

@@ -23,19 +23,13 @@ export class LoginComponent implements OnInit {
       password: this.password
     };
 
-    this.authService.authenticateUser(user).subscribe(data => {
-      if ((data as any).success) {
-        this.authService.storeUserData(data.token, data.user);
-        if (data.user.role === 'admin') {
-          this.router.navigate(['admin']);
-        } else {
-          this.router.navigate(['user']);
-        }
-      } else {
-        console.log(data, 'TODO Send message to user not authenticated');
-        this.router.navigate(['login']);
-      }
-    });
+    this.authService.authenticateUser(user)
+      .subscribe(
+        res => {
+          localStorage.setItem('id_token', res.token);
+          this.router.navigate(['/' + res.role]);
+        },
+        err => console.log(err)
+      );
   }
-
 }

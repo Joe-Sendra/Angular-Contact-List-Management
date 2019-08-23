@@ -11,12 +11,15 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   username: string;
   password: string;
-
+  hideError: boolean;
+  display: string;
   constructor(private validateService: ValidateService,
               private authService: AuthService,
               private router: Router) { }
 
   ngOnInit() {
+    this.hideError = true;
+    this.display = 'none';
   }
 
   onRegisterSubmit() {
@@ -31,15 +34,21 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-    // Register User
-    this.authService.registerUser(user).subscribe(data => {
-      if ((data as any).success) {
-        alert('Username has been registered, please login');
-        this.router.navigate(['/login']);
-      } else {
-        alert('Unable to register user, please try again');
-        this.router.navigate(['/register']);
-      }
-    });
+    this.authService.registerUser(user)
+      .subscribe(
+        res => {
+          localStorage.setItem('id_token', res.token);
+          this.display = 'block';
+
+        },
+        err => {
+          if (!err.isUsernameAvailable) {
+            this.hideError = false;
+          }
+        }
+      );
+  }
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 }

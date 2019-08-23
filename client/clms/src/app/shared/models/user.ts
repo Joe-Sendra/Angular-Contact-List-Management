@@ -1,7 +1,9 @@
+import { Role } from './roles';
+
 export interface IUser {
     username: string;
     password: string;
-    usertype: string;
+    role: Role;
     login: {
         status: boolean;
     };
