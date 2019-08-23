@@ -10,11 +10,12 @@ import { AuthService } from '../../services/auth/auth.service';
 export class LoginComponent implements OnInit {
   username: string;
   password: string;
+  hideError: boolean;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-
+    this.hideError = true;
   }
 
   onLoginSubmit() {
@@ -29,7 +30,12 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('id_token', res.token);
           this.router.navigate(['/' + res.role]);
         },
-        err => console.log(err)
+        err => {
+          console.log(err);
+          if (err.status === 401) {
+            this.hideError = false;
+          }
+        }
       );
   }
 }
