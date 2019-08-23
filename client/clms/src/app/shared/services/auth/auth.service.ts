@@ -1,21 +1,71 @@
 import { Injectable } from '@angular/core';
-import { UserDataService } from '../user-data/user-data.service';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { config } from '../../../config';
 import { IUser } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  authToken: any;
+  currentUser: IUser;
+  constructor(private http: HttpClient) {
 
-  user: IUser;
+  }
 
-  constructor(private userData: UserDataService) { }
+  registerUser(user) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(`${config.apiUrl}/users/register`, user, { headers }).pipe(map((res: any) => res));
+  }
 
-  public isAuthenticated(): boolean {
-    this.user = this.userData.getCurrentUser();
-    if (this.user.login.status) {
-      return true;
+  authenticateUser(user) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(`${config.apiUrl}/users/authenticate`, user, { headers }).pipe(map((res: any) => {
+      this.currentUser = {
+        username: user.username,
+        password: user.password,
+        role: res.role,
+        login: {status: true}
+      }
+      return res; }
+      ));
+  }
+
+  getRole() {
+    if (this.currentUser) {
+      return this.currentUser.role;
+    } else {
+      return 'Unauthorized';
     }
-    return false;
+  }
+
+  getProfile() {
+    const headers = new HttpHeaders();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get(`${config.apiUrl}/users/profile`, { headers }).pipe(map((res) => res));
+  }
+
+  loadToken() {
+    const token = localStorage.getItem('id_token');
+    this.authToken = token;
+  }
+
+  loggedIn() {
+    return !!localStorage.getItem('id_token');
+  }
+
+  getToken() {
+    return localStorage.getItem('id_token');
+  }
+
+  logout() {
+    this.authToken = null;
+    this.currentUser = null;
+    localStorage.clear();
   }
 }

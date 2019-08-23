@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from '../../models/user';
-import { UserDataService } from '../../services/user-data/user-data.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +8,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  username: string;
+  password: string;
+  hideError: boolean;
 
-  user: IUser = {username: null, password: null, usertype: null, login: {status: null}};
-  constructor(private userData: UserDataService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-
+    this.hideError = true;
   }
 
-  login(user: any) {
-    if (this.userData.loginUser(this.user) === true) {
-      this.user = this.userData.getCurrentUser();
-      // Route to component based on role
-      this.router.navigate(['/' + this.user.usertype]);
-    }
+  onLoginSubmit() {
+    const user = {
+      username: this.username,
+      password: this.password
+    };
+
+    this.authService.authenticateUser(user)
+      .subscribe(
+        res => {
+          localStorage.setItem('id_token', res.token);
+          this.router.navigate(['/' + res.role]);
+        },
+        err => {
+          console.log(err);
+          if (err.status === 401) {
+            this.hideError = false;
+          }
+        }
+      );
   }
 }

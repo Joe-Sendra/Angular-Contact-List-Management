@@ -5,34 +5,34 @@ import { HomeComponent } from './main-app/components/home/home.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { AdminComponent } from './admin/components/main/main.component';
 import { UsersComponent } from './user/components/main/main.component';
-import { AuthGuardService as AuthGuard } from './shared/services/guards/auth-guard.service';
-import { RoleGuardService as RoleGuard } from './shared/services/guards/role-guard.service';
 import { AdminHomeComponent } from './admin/components/home/home.component';
 import { UserHomeComponent } from './user/components/home/home.component';
-import { AdminLogoutComponent } from './admin/components/logout/logout.component';
-import { UserLogoutComponent } from './user/components/logout/logout.component';
+import { RegisterComponent } from './shared/components/register/register.component';
+import { AuthGuardService } from './shared/services/guards/auth-guard.service';
+import { RoleGuardService as RoleGuard } from './shared/services/guards/role-guard.service';
 
 
 
 const routes: Routes = [
+  {path: '', component: HomeComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'admin', component: AdminComponent, canActivate: [AuthGuard],
+  {path: 'admin', component: AdminComponent, canActivate: [AuthGuardService],
     children: [
       {path: 'home', component: AdminHomeComponent, canActivate: [RoleGuard], data: {
         expectedRole: 'admin'}
       },
-      {path: 'logout', component: AdminLogoutComponent}
+      {path: 'logout', component: LoginComponent}
     ]
   },
-  {path: 'user', component: UsersComponent, canActivate: [AuthGuard],
+  {path: 'user', component: UsersComponent, canActivate: [AuthGuardService],
     children: [
       {path: 'home', component: UserHomeComponent, canActivate: [RoleGuard], data: {
         expectedRole: 'user'}
       },
-      {path: 'logout', component: UserLogoutComponent}
+      {path: 'logout', component: LoginComponent}
     ]
   },
-  {path: '', component: HomeComponent},
   {path: '**', redirectTo: '/'}
 ];
 
