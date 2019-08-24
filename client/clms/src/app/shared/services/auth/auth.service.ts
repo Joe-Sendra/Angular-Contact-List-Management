@@ -54,6 +54,13 @@ export class AuthService {
     return this.http.get(`${config.apiUrl}/users/profile`, { headers }).pipe(map((res) => res));
   }
 
+  getUsers() {
+    const headers = new HttpHeaders();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    return this.http.get(`${config.apiUrl}/users`, { headers }).pipe(map((res: any) => res));
+  }
+
   loadToken() {
     const token = localStorage.getItem('id_token');
     this.authToken = token;
