@@ -7,7 +7,7 @@ import { MainComponent } from './main-app/components/main/main.component';
 import { HomeComponent } from './main-app/components/home/home.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { AdminComponent } from './admin/components/main/main.component';
-import { UsersComponent } from './user/components/main/main.component';
+import { AdminUsersComponent } from './admin/components/users/users.component';
 import { AdminHomeComponent } from './admin/components/home/home.component';
 import { UserHomeComponent } from './user/components/home/home.component';
 import { RegisterComponent } from './shared/components/register/register.component';
@@ -17,6 +17,8 @@ import { AuthService } from './shared/services/auth/auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuardService } from './shared/services/guards/auth-guard.service';
 import { TokenInterceptorService } from './shared/services/token-interceptor/token-interceptor.service';
+import { UsersComponent } from './user/components/main/main.component';
+
 
 
 
@@ -28,6 +30,7 @@ import { TokenInterceptorService } from './shared/services/token-interceptor/tok
     LoginComponent,
     AdminComponent,
     AdminHomeComponent,
+    AdminUsersComponent,
     UsersComponent,
     UserHomeComponent,
     RegisterComponent,

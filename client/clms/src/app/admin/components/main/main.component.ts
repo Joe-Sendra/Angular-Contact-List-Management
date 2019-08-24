@@ -10,12 +10,9 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 })
 export class AdminComponent implements OnInit {
 
-  currentUser: string;
   constructor(private router: Router, public auth: AuthService) { }
 
   ngOnInit() {
-    this.currentUser = this.auth.currentUser.username;
-    this.router.navigate(['admin/home']);
   }
 
 }

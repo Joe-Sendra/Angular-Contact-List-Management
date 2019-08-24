@@ -16,7 +16,7 @@
             Users
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item">View</a>
+            <a class="dropdown-item" [routerLink]="['/admin/users']">View</a>
             <a class="dropdown-item">Create</a>
             <a class="dropdown-item">Update</a>
             <a class="dropdown-item">Delete</a>
@@ -43,6 +43,7 @@
           <a class="nav-link" href="#" (click)="onLogoutCLick()">Logout</a>
         </li>
         <li class="nav-item"><a class="nav-link" href="#" *ngIf="currentUsername">{{ currentUsername }}</a></li>
+        <li>DEBUG: role: {{ currentRole }}</li>
       </ul>
     </div>
   </nav>

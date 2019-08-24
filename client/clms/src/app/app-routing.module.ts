@@ -10,6 +10,7 @@ import { UserHomeComponent } from './user/components/home/home.component';
 import { RegisterComponent } from './shared/components/register/register.component';
 import { AuthGuardService } from './shared/services/guards/auth-guard.service';
 import { RoleGuardService as RoleGuard } from './shared/services/guards/role-guard.service';
+import { AdminUsersComponent } from './admin/components/users/users.component';
 
 
 
@@ -19,9 +20,9 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuardService],
     children: [
-      {path: 'home', component: AdminHomeComponent, canActivate: [RoleGuard], data: {
-        expectedRole: 'admin'}
-      },
+      {path: '', pathMatch: 'full', redirectTo: 'home'},
+      {path: 'home', component: AdminHomeComponent, canActivate: [RoleGuard], data: {expectedRole: 'admin'}},
+      {path: 'users', component: AdminUsersComponent, canActivate: [RoleGuard], data: {expectedRole: 'admin'}},
       {path: 'logout', component: LoginComponent}
     ]
   },
@@ -37,7 +38,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
