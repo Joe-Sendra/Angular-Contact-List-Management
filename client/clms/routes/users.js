@@ -90,7 +90,6 @@ router.get('/', verfyToken, (req, res) => {
         User.find()
             .exec()
             .then(docs => {
-                console.log(docs);
                 res.status(200).json(docs);
             })
             .catch(err => {
