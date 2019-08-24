@@ -22,6 +22,17 @@
             <a class="dropdown-item">Delete</a>
           </div>
         </li>
+        <li class="nav-item dropdown" *ngIf="currentRole==='user'">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Contacts
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item">View</a>
+            <a class="dropdown-item">Create</a>
+            <a class="dropdown-item">Update</a>
+            <a class="dropdown-item">Delete</a>
+          </div>
+        </li>
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngIf="!authService.loggedIn()">
           <a class="nav-link" [routerLink]="['/login']">Login <span class="sr-only">(current)</span></a>
         </li>
