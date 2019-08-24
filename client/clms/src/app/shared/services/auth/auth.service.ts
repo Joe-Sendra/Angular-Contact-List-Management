@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { config } from '../../../config';
 import { IUser } from '../../models/user';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { IUser } from '../../models/user';
 export class AuthService {
   authToken: any;
   currentUser: IUser;
+  userSubject = new BehaviorSubject(this.currentUser);
   constructor(private http: HttpClient) {
 
   }
@@ -29,8 +31,10 @@ export class AuthService {
         password: user.password,
         role: res.role,
         login: {status: true}
-      }
-      return res; }
+      };
+      this.userSubject.next(this.currentUser);
+      return res;
+    }
       ));
   }
 
@@ -66,6 +70,7 @@ export class AuthService {
   logout() {
     this.authToken = null;
     this.currentUser = null;
+    this.userSubject.next(this.currentUser);
     localStorage.clear();
   }
 }
