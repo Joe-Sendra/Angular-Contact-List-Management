@@ -21,7 +21,10 @@ const userRoutes = require('./routes/users');
 // Create the server application
 const app = express();
 
-// Connect the database to the app (returns a promis)
+// Connect the database to the app (returns a promise)
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(
   'mongodb+srv://JoeyDevs:' +
   process.env.MONGO_ATLAS_PW +
