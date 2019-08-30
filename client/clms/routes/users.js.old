@@ -25,7 +25,7 @@ function verfyToken(req, res, next) {
 router.post('/register', (req, res, next) => {
     User.getUserByUsername(req.body.username, (err, user) => {
         if (err) console.log(err);
-        if(!user){        
+        if(!user){
             let newUser = new User({
                 username: req.body.username,
                 password: req.body.password,
@@ -52,6 +52,39 @@ router.post('/register', (req, res, next) => {
             })
         }
     });
+});
+
+// Create
+router.post('/create', (req, res) => {
+  User.getUserByUsername(req.body.username, (err, user) => {
+      if (err) console.log(err);
+      if(!user){
+          let newUser = new User({
+              username: req.body.username,
+              password: req.body.password,
+              role: req.body.role
+          });
+
+          User.addUser(newUser, (err) => {
+              if(err){
+                  res.json({success: false, msg: 'Failed to register user'});
+              } else {
+                  let payload = {
+                      subject: newUser._id,
+                      role: newUser.role
+                  }
+                  let token = jwt.sign(payload, config.secret)
+                  res.status(200).send({token})
+              }
+          });
+      } else {
+          // Username already exists
+          res.status(409).json({
+              message: 'Conflict: Username already exists',
+              isUsernameAvailable: false
+          })
+      }
+  });
 });
 
 // Authenticate
@@ -100,5 +133,23 @@ router.get('/', verfyToken, (req, res) => {
     }
 
 );
+
+router.delete('/:id', (req, res, next) => {
+  console.log('request headers', req.headers)
+  console.log('request body: ', req.body);
+    // params gives access to all encoded parameters (id in this case)
+    User.deleteOne({ _id: req.params.id }).then(result => {
+      if (result.deletedCount === 1) {
+        res.status(200).json({ message: 'Deletion successful!' });
+      } else {
+        res.status(401).json({ message: 'Not authorized!' });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Deleting user failed!'
+      });
+    });
+  });
 
 module.exports = router;
