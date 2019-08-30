@@ -46,7 +46,7 @@ exports.userLogin = (req, res, next) => {
     }
     // Email and password match, create token
     const token = jwt.sign(
-      {email: fetchedUser.email, userId: fetchedUser._id},
+      {email: fetchedUser.email, userId: fetchedUser._id, role: fetchedUser.role},
       process.env.JWT_KEY,
       { expiresIn: '1h' }
     );
