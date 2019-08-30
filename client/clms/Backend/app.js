@@ -16,7 +16,7 @@ const mongoose = require('mongoose');
 
 // Need to import our routes
 const contactRoutes = require('./routes/contacts');
-// const userRoutes = require('./routes/users');
+const userRoutes = require('./routes/users');
 
 // Create the server application
 const app = express();
@@ -51,6 +51,6 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/contacts', contactRoutes);
-// app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 module.exports = app;
