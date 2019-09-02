@@ -1,0 +1,26 @@
+<div class="container">
+  <h2 class="page-header">{{ mode }} User</h2>
+  <form [formGroup]="form" (ngSubmit)="onSaveUser()">
+      <div class="form-group">
+        <input
+          formControlName="email"
+          type="email"
+          placeholder="Email"
+          class="form-control"/>
+      </div>
+      <div class="form-group" *ngIf="mode==='Create'">
+        <input
+        formControlName="password"
+        type="password"
+        placeholder="Password"
+        class="form-control"/>
+      </div>
+      <div class="form-group">
+        <select formControlName="role" class="form-control">
+            <option selected="selected">user</option>
+            <option>admin</option>
+        </select>
+      </div>
+      <button class="btn btn-primary">Save User</button>
+  </form>
+</div>

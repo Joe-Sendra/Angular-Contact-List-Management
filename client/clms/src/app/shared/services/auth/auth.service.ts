@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { config } from '../../../config';
-import { IUser } from '../../models/user';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
+import { map } from 'rxjs/operators';
+import { IUser } from '../../models/user';
+
+const BACKEND_URL = environment.apiUrl + '/users/';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,25 +14,46 @@ export class AuthService {
   authToken: any;
   currentUser: IUser;
   userSubject = new BehaviorSubject(this.currentUser);
-  constructor(private http: HttpClient) {
+  constructor(private httpClient: HttpClient) {
 
   }
 
-  registerUser(user) {
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    return this.http.post(`${config.apiUrl}/users/register`, user, { headers }).pipe(map((res: any) => res));
-  }
+  // registerUser(user): Observable<any> {
+  //   const headers = new HttpHeaders();
+  //   headers.append('Content-Type', 'application/json');
+  //   console.log(BACKEND_URL);
+  //   return this.httpClient.post(`${BACKEND_URL}register`, user, {headers})
+  //     // .subscribe(
+  //     //   res => {
+  //     //     // this.loadAll();
+  //     //     console.log('TODO update user Subject (user added)', res);
+  //     //   },
+  //     //   err => console.error(err)
+  //     // )
+  //     ;
+  // }
+
+  // registerUser(user) {
+  //   const headers = new HttpHeaders();
+  //   headers.append('Content-Type', 'application/json');
+  //   return this.http.post(`${config.apiUrl}/users/register`, user, { headers }).pipe(map((res: any) => res));
+  // }
+
+  // addUser(user) {
+  //   const headers = new HttpHeaders();
+  //   headers.append('Content-Type', 'application/json');
+  //   return this.http.post(`${config.apiUrl}/users/create`, user, { headers }).pipe(map((res: any) => res));
+  // }
 
   authenticateUser(user) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(`${config.apiUrl}/users/authenticate`, user, { headers }).pipe(map((res: any) => {
+    return this.httpClient.post(`${BACKEND_URL}login`, user, { headers }).pipe(map((res: any) => {
       this.currentUser = {
-        username: user.username,
+        _id: null,
+        email: user.email,
         password: user.password,
-        role: res.role,
-        login: {status: true}
+        role: res.role
       };
       this.userSubject.next(this.currentUser);
       return res;
@@ -46,19 +69,10 @@ export class AuthService {
     }
   }
 
-  getProfile() {
-    const headers = new HttpHeaders();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
-    return this.http.get(`${config.apiUrl}/users/profile`, { headers }).pipe(map((res) => res));
-  }
-
-  getUsers() {
-    const headers = new HttpHeaders();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    return this.http.get(`${config.apiUrl}/users`, { headers }).pipe(map((res: any) => res));
+  deleteUser(user: IUser): Observable<any> {
+    // _id: req.params.id, role: req.userData.role
+    console.log('request needs to include', user._id, user.role);
+    return this.httpClient.delete(`${BACKEND_URL}${user._id}`);
   }
 
   loadToken() {

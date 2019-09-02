@@ -1,9 +1,9 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Contact List Manager</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
+
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
@@ -22,7 +22,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" [routerLink]="['/admin/users']">View</a>
-            <a class="dropdown-item">Create</a>
+            <a class="dropdown-item" [routerLink]="['/admin/create']">Create</a>
             <a class="dropdown-item">Update</a>
             <a class="dropdown-item">Delete</a>
           </div>
@@ -47,7 +47,63 @@
         <li class="nav-item" *ngIf="authService.loggedIn()">
           <a class="nav-link" href="#" (click)="onLogoutCLick()">Logout</a>
         </li>
-        <li class="nav-item"><a class="nav-link" href="#" *ngIf="currentUsername">{{ currentUsername }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" *ngIf="currentEmail">(user: {{ currentEmail }})</a></li>
+      </ul>
+    </div>
+  </nav> -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Contact List Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['/']">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav navbar-right">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+          <a class="nav-link" [routerLink]="['/admin/home']">
+            AdminDashboard
+          </a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+          <a class="nav-link" [routerLink]="['/user/home']">
+            UserDashboard
+          </a>
+        </li>
+        <li class="nav-item dropdown" >
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Users
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="['/admin/users']">View</a>
+            <a class="dropdown-item" [routerLink]="['/admin/create']">Create</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown" >
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Contacts
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item">View</a>
+            <a class="dropdown-item">Create</a>
+            <a class="dropdown-item">Update</a>
+            <a class="dropdown-item">Delete</a>
+          </div>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+          <a class="nav-link" [routerLink]="['/login']">Login <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+          <a class="nav-link" [routerLink]="['/register']">Register</a>
+        </li>
+        <li class="nav-item" *ngIf="authService.loggedIn()">
+          <a class="nav-link" href="#" (click)="onLogoutCLick()">Logout</a>
+        </li>
+        <li class="nav-item"><a class="nav-link disabled" href="#" *ngIf="currentEmail">(user: {{ currentEmail }})</a></li>
       </ul>
     </div>
   </nav>

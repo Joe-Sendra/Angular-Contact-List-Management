@@ -11,6 +11,9 @@ const express = require('express');
 // This allows you to use methods like req.body
 const bodyParser = require('body-parser');
 
+// Need to import so we can avoid CORS errors
+const cors = require('cors');
+
 // Need to import so that we can connect the database to the nodeJS server
 const mongoose = require('mongoose');
 
@@ -35,6 +38,9 @@ mongoose.connect(
   .catch(() => {
     console.log('Connection failed!');
   });
+
+// CORS Middleware
+app.use(cors());
 
 // Middleware for application/json
 app.use(bodyParser.json());

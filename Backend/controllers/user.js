@@ -11,6 +11,7 @@ exports.createUser = (req, res, next) => {
         password: hash,
         role: req.body.role
       });
+      console.log(user);
       user.save()
         .then(result => {
           res.status(201).json({
@@ -54,7 +55,8 @@ exports.userLogin = (req, res, next) => {
     res.status(200).json({
       token: token,
       expiresIn: 3600,
-      userId: fetchedUser._id
+      userId: fetchedUser._id,
+      role: fetchedUser.role
     });
   })
   .catch(err => {
@@ -119,26 +121,36 @@ exports.deleteUser = (req, res, next) => {
 }
 
 exports.updateUser = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10).then(
-    hash => {
-      const user = new User({
-        _id: req.params.id,
-        email: req.body.email,
-        password: hash,
-        role: req.body.role
-      });
-      User.updateOne({ _id: req.params.id }, user).then(result => {
-        if (result.n > 0) {
-          res.status(200).json({ message: 'Update successful!' });
-        } else {
-          res.status(401).json({ message: 'Not authorized!' });
-        }
-      })
-      .catch(err => {
-        res.status(500).json({
-          message: "Couldn't update user!",
-          error: err
+  let user;
+  if(req.body.password){
+    bcrypt.hash(req.body.password, 10).then(
+      hash => {
+        user = new User({
+          _id: req.params.id,
+          email: req.body.email,
+          password: hash,
+          role: req.body.role
         });
-      });
+      }
+    )
+  } else {
+    user = new User({
+      _id: req.params.id,
+      email: req.body.email,
+      role: req.body.role
     });
   }
+  User.updateOne({ _id: req.params.id }, user).then(result => {
+    if (result.n > 0) {
+      res.status(200).json({ message: 'Update successful!' });
+    } else {
+      res.status(401).json({ message: 'Not authorized!' });
+    }
+  })
+  .catch(err => {
+    res.status(500).json({
+      message: "Couldn't update user!",
+      error: err
+    });
+  });
+}

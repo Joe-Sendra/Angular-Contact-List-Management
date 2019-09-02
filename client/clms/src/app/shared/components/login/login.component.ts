@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string;
+  email: string;
   password: string;
   hideError: boolean;
 
@@ -20,15 +20,18 @@ export class LoginComponent implements OnInit {
 
   onLoginSubmit() {
     const user = {
-      username: this.username,
+      email: this.email,
       password: this.password
     };
 
     this.authService.authenticateUser(user)
       .subscribe(
         res => {
+          console.log(res);
           localStorage.setItem('id_token', res.token);
+          console.log(res.role);
           this.router.navigate(['/' + res.role]);
+          // this.router.navigate([res.role]);
         },
         err => {
           console.log(err);

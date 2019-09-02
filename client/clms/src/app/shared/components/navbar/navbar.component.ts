@@ -12,7 +12,7 @@ import { Role } from '../../models/roles';
 })
 export class NavbarComponent implements OnInit {
 
-  currentUsername: string;
+  currentEmail: string;
   currentRole: Role;
   userObserver: Observer<IUser>;
   constructor(public authService: AuthService, private router: Router) { }
@@ -21,10 +21,10 @@ export class NavbarComponent implements OnInit {
     this.userObserver = {
       next: (user) => {
         if (user) {
-          this.currentUsername = user.username;
+          this.currentEmail = user.email;
           this.currentRole = user.role;
         } else {
-          this.currentUsername = null;
+          this.currentEmail = null;
           this.currentRole = null;
         }
       },
@@ -36,7 +36,6 @@ export class NavbarComponent implements OnInit {
 
   onLogoutCLick() {
     this.authService.logout();
-    console.log('You are logged out');
     this.router.navigate(['login']);
     return false;
   }

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main-app/components/main/main.component';
@@ -18,6 +18,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuardService } from './shared/services/guards/auth-guard.service';
 import { TokenInterceptorService } from './shared/services/token-interceptor/token-interceptor.service';
 import { UsersComponent } from './user/components/main/main.component';
+import { UserCreateComponent } from './admin/components/user-create/user-create.component';
+import { SandboxComponent } from './sandbox/sandbox.component';
+import { SandboxService } from './sandbox/sandbox.service';
+import { UsersService } from './user/services/users.service';
 
 
 
@@ -31,18 +35,21 @@ import { UsersComponent } from './user/components/main/main.component';
     AdminComponent,
     AdminHomeComponent,
     AdminUsersComponent,
+    UserCreateComponent,
     UsersComponent,
     UserHomeComponent,
     RegisterComponent,
-    NavbarComponent
+    NavbarComponent,
+    SandboxComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [ValidateService, AuthService, AuthGuardService,
+  providers: [ValidateService, AuthService, AuthGuardService, UsersService, SandboxService,
   {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

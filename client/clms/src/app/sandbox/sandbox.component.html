@@ -1,0 +1,118 @@
+<div class="container">
+  <div class="jumbotron">
+    <h2>Users - all</h2>
+    <button (click)="getUsers()">Get Users</button>
+    <ul>
+      <li *ngFor="let user of users">
+          {{ user._id }} - {{ user.email }} - {{ user.role }}
+          <button (click)="deleteUser(user._id)">Delete User</button>
+          <button (click)="editUser(user, 'admin')">Make Admin</button>
+          <button (click)="editUser(user, 'user')">Make User</button>
+      </li>
+    </ul>
+    <hr>
+    <h2>Users - single</h2>
+    user: id<input [(ngModel)]="userID"><button (click)="getUser()">Get User</button>
+    <li *ngIf="singleUserLookup">
+      {{ singleUserLookup._id }} - {{ singleUserLookup.email }} - {{ singleUserLookup.role }}
+    </li>
+    <hr>
+    <!-- <h2>Users - Edit</h2>
+    user: id<input [(ngModel)]="userID"> - role<input [(ngModel)]="userRole"> <button (click)="editUser()">Edit User</button>
+    <hr> -->
+    <h2>Users - Register</h2>
+    <button (click)="tryAddUser()">Add User</button>
+    <hr>
+    <h2>Users - Login</h2>
+    <p>logged in user: {{ currentUser.userId }}</p>
+    <p>token: {{ currentUser.token }}</p>
+    login: email<input [(ngModel)]="email"> - password<input [(ngModel)]="password"> - <button (click)="loginUser()">Login</button>
+  </div>
+  <h2>Contacts - all</h2>
+  <button (click)="getContacts()">Get Contacts</button>
+  <ul>
+    <li *ngFor="let contact of contacts">
+        {{ contact._id }}
+        <ul>
+          <li>{{ contact.name.first }} - {{ contact.name.middle }} - {{ contact.name.last }} - {{ contact.name.suffix }}</li>
+          <li>
+            {{ contact.email.home }}
+          </li>
+          <li>
+              {{ contact.email.work }}
+          </li>
+        </ul>
+        <ul>
+          <li>
+              {{ contact.address.home.street }}, {{ contact.address.home.city }}, {{ contact.address.home.state }}, {{ contact.address.home.zipcode }}
+          </li>
+          <li>
+              {{ contact.address.work.street }}, {{ contact.address.work.city }}, {{ contact.address.work.state }}, {{ contact.address.work.zipcode }}
+          </li>
+          <li>
+              {{ contact.address.other.street }}, {{ contact.address.other.city }}, {{ contact.address.other.state }}, {{ contact.address.other.zipcode }}
+          </li>
+        </ul>
+        <ul>
+          <li>
+              {{ contact.phone.mobile }}
+          </li>
+          <li>
+              {{ contact.phone.home }}
+          </li>
+          <li>
+              {{ contact.phone.work }}
+          </li>
+          <li>
+              {{ contact.phone.other }}
+          </li>
+        </ul>
+        <button (click)="deleteContact(contact._id)">Delete Contact</button>
+        <button (click)="editContact(contact, 'upper')">Make upper</button>
+        <button (click)="editContact(contact, 'lower')">Make lower</button>
+    </li>
+  </ul>
+  <hr>
+  <h2>Contacts - single</h2>
+  contact: id<input [(ngModel)]="contactID"><button (click)="getContact()">Get Contact</button>
+  <li *ngIf="singleContactLookup">
+      {{ singleContactLookup.name.first }} - {{ singleContactLookup.name.middle }} - {{ singleContactLookup.name.last }} - {{ singleContactLookup.name.suffix }}
+      <ul>
+        <li>
+          {{ singleContactLookup.email.home }}
+        </li>
+        <li>
+            {{ singleContactLookup.email.work }}
+        </li>
+      </ul>
+      <ul>
+        <li>
+            {{ singleContactLookup.address.home.street }}, {{ singleContactLookup.address.home.city }}, {{ singleContactLookup.address.home.state }}, {{ singleContactLookup.address.home.zipcode }}
+        </li>
+        <li>
+            {{ singleContactLookup.address.work.street }}, {{ singleContactLookup.address.work.city }}, {{ singleContactLookup.address.work.state }}, {{ singleContactLookup.address.work.zipcode }}
+        </li>
+        <li>
+            {{ singleContactLookup.address.other.street }}, {{ singleContactLookup.address.other.city }}, {{ singleContactLookup.address.other.state }}, {{ singleContactLookup.address.other.zipcode }}
+        </li>
+      </ul>
+      <ul>
+        <li>
+            {{ singleContactLookup.phone.mobile }}
+        </li>
+        <li>
+            {{ singleContactLookup.phone.home }}
+        </li>
+        <li>
+            {{ singleContactLookup.phone.work }}
+        </li>
+        <li>
+            {{ singleContactLookup.phone.other }}
+        </li>
+      </ul>
+  </li>
+  <hr>
+  <h2>Contacts - Create</h2>
+  <button (click)="tryAddContact()">Add Contact</button>
+  <hr>
+</div>

@@ -3,11 +3,15 @@
     <thead class="thead-dark">
         <th>User</th>
         <th>Role</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </thead>
     <tbody>
         <tr *ngFor="let user of users">
-            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
+            <td><a class="btn btn-primary" [routerLink]="['/admin/edit', user._id]">Edit</a></td>
+            <td><button class="btn btn-danger" (click)="onDeleteUser(user)">Delete</button></td>
         </tr>
     </tbody>
 </table>

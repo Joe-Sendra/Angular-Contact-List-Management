@@ -1,12 +1,12 @@
 <div class="container">
     <div class="alert alert-danger" role="alert" [hidden]="hideError">
-        Username is already taken, please try another
+        Email is already registered, please try another
     </div>
     <h2 class="page-header">Register</h2>
     <form (submit)="onRegisterSubmit()">
         <div class="form-group">
-            <label>Username</label>
-            <input type="text" [(ngModel)]="username" name="name" class="form-control">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="email" name="email" class="form-control">
         </div>
         <div class="form-group">
             <label>Password</label>
