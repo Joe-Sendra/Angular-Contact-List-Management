@@ -24,6 +24,7 @@ import { SandboxService } from './sandbox/sandbox.service';
 import { UsersService } from './user/services/users.service';
 import { ContactListComponent } from './user/components/contact-list/contact-list.component';
 import { ContactCreateComponent } from './user/components/contact-create/contact-create.component';
+import { ContactDetailComponent } from './user/components/contact-detail/contact-detail.component';
 
 
 
@@ -42,6 +43,7 @@ import { ContactCreateComponent } from './user/components/contact-create/contact
     UserHomeComponent,
     ContactListComponent,
     ContactCreateComponent,
+    ContactDetailComponent,
     RegisterComponent,
     NavbarComponent,
     SandboxComponent
