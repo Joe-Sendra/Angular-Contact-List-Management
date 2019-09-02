@@ -25,6 +25,7 @@ import { UsersService } from './user/services/users.service';
 import { ContactListComponent } from './user/components/contact-list/contact-list.component';
 import { ContactCreateComponent } from './user/components/contact-create/contact-create.component';
 import { ContactDetailComponent } from './user/components/contact-detail/contact-detail.component';
+import { ContactsService } from './user/services/contacts.service';
 
 
 
@@ -55,7 +56,7 @@ import { ContactDetailComponent } from './user/components/contact-detail/contact
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [ValidateService, AuthService, AuthGuardService, UsersService, SandboxService,
+  providers: [ValidateService, AuthService, AuthGuardService, UsersService, ContactsService, SandboxService,
   {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
