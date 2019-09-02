@@ -13,6 +13,8 @@ import { RoleGuardService as RoleGuard } from './shared/services/guards/role-gua
 import { AdminUsersComponent } from './admin/components/users/users.component';
 import { UserCreateComponent } from './admin/components/user-create/user-create.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
+import { ContactListComponent } from './user/components/contact-list/contact-list.component';
+import { ContactCreateComponent } from './user/components/contact-create/contact-create.component';
 
 
 
@@ -57,7 +59,10 @@ const routes: Routes = [
   },
   {path: 'user', component: UsersComponent,
     children: [
+      {path: '', pathMatch: 'full', redirectTo: 'home'},
       {path: 'home', component: UserHomeComponent},
+      {path: 'contacts', component: ContactListComponent},
+      {path: 'create', component: ContactCreateComponent},
       {path: 'logout', component: LoginComponent}
     ]
   },

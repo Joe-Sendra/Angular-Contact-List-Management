@@ -23,8 +23,6 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" [routerLink]="['/admin/users']">View</a>
             <a class="dropdown-item" [routerLink]="['/admin/create']">Create</a>
-            <a class="dropdown-item">Update</a>
-            <a class="dropdown-item">Delete</a>
           </div>
         </li>
         <li class="nav-item dropdown" *ngIf="currentRole==='user'">
@@ -32,10 +30,8 @@
             Contacts
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item">View</a>
-            <a class="dropdown-item">Create</a>
-            <a class="dropdown-item">Update</a>
-            <a class="dropdown-item">Delete</a>
+            <a class="dropdown-item" [routerLink]="['/user/contacts']">View</a>
+            <a class="dropdown-item" [routerLink]="['/user/create']"]>Create</a>
           </div>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngIf="!authService.loggedIn()">
@@ -88,10 +84,9 @@
             Contacts
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item">View</a>
-            <a class="dropdown-item">Create</a>
-            <a class="dropdown-item">Update</a>
-            <a class="dropdown-item">Delete</a>
+            <a class="dropdown-item" [routerLink]="['/user/contacts']">View</a>
+            <a class="dropdown-item" [routerLink]="['/user/create']">Create</a>
+
           </div>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
