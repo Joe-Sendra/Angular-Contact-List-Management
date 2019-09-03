@@ -20,7 +20,4 @@ export class ContactListComponent implements OnInit {
     });
   }
 
-  onDeleteContact(contact) {
-
-  }
 }

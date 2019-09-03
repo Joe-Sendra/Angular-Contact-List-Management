@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IContact } from 'src/app/shared/models/contacts';
+import { ContactsService } from '../../services/contacts.service';
 
 
 @Component({
@@ -9,10 +10,12 @@ import { IContact } from 'src/app/shared/models/contacts';
 })
 export class ContactDetailComponent {
 
+  constructor(private contactService: ContactsService) {}
+
   @Input()contact: IContact;
 
-  onDeleteContact(contact) {
-
+  onDeleteContact(contactID) {
+    this.contactService.deleteContact(contactID);
   }
 
 }

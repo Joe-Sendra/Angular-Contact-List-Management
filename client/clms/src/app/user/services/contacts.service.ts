@@ -42,6 +42,14 @@ export class ContactsService {
     return this.httpClient.patch(`${BACKEND_URL}` + contact._id, contact, {headers});
   }
 
+  deleteContact(contactID: string) {
+    this.httpClient.delete(`${BACKEND_URL}` + contactID).subscribe(res => {
+      console.log(res);
+      this.loadAllContacts();
+    },
+    err => console.error(err));
+  }
+
   loadAllContacts() {
     this.httpClient.get<IContact[]>(`${BACKEND_URL}`).subscribe(allContacts => {
       this.contactDataStore.contacts = allContacts;
