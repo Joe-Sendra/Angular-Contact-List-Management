@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Role } from 'src/app/shared/models/roles';
-import { ValidateService } from 'src/app/shared/services/validate/validate.service';
 import { UsersService } from 'src/app/user/services/users.service';
 import { IUser } from 'src/app/shared/models/user';
 
@@ -21,7 +20,6 @@ export class UserCreateComponent implements OnInit {
   role: Role = Role.user;
 
   constructor(
-    private validateService: ValidateService,
     private userService: UsersService,
     private route: ActivatedRoute
   ) {}
@@ -38,10 +36,7 @@ export class UserCreateComponent implements OnInit {
       if (paramMap.has('userId')) {
         this.mode = 'Edit';
         console.log('You are in Edit mode');
-        // this.form.controls([password: ])
-        // this.form.controls.password.setValidators([]);
         this.form.controls.password.disable();
-        // this.form.updateValueAndValidity();
         this._userID = paramMap.get('userId');
         this.userService.getUser(this._userID).subscribe(userData => {
           this.user = {

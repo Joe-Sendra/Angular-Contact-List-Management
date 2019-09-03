@@ -20,6 +20,28 @@ export class ContactsService {
     return this.httpClient.get(`${BACKEND_URL}`);
   }
 
+  getContact(contactId: string): Observable<any> {
+    return this.httpClient.get(`${BACKEND_URL}` + contactId);
+  }
+
+  addContact(contact) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.httpClient.post(`${BACKEND_URL}`, contact, {headers})
+      .subscribe(
+        res => {
+          this.loadAllContacts();
+        },
+        err => console.error(err)
+      );
+  }
+
+  editContact(contact): Observable<any> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.httpClient.patch(`${BACKEND_URL}` + contact._id, contact, {headers});
+  }
+
   loadAllContacts() {
     this.httpClient.get<IContact[]>(`${BACKEND_URL}`).subscribe(allContacts => {
       this.contactDataStore.contacts = allContacts;

@@ -62,6 +62,7 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'home'},
       {path: 'home', component: UserHomeComponent},
       {path: 'contacts', component: ContactListComponent},
+      {path: 'edit/:contactId', component: ContactCreateComponent},
       {path: 'create', component: ContactCreateComponent},
       {path: 'logout', component: LoginComponent}
     ]
