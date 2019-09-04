@@ -1,72 +1,52 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { IUser } from '../../models/user';
+import { Role } from '../../models/roles';
 
 const BACKEND_URL = environment.apiUrl + '/users/';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  authToken: any;
-  currentUser: IUser;
-  userSubject = new BehaviorSubject(this.currentUser);
+  private authToken: any;
+  private authStatusListener = new BehaviorSubject<{
+    isLoggedIn: boolean,
+    email: string,
+    role: Role
+  }>({
+      isLoggedIn: false,
+      email: null,
+      role: null
+    });
+  // currentUser: IUser;
+  // userSubject = new BehaviorSubject(this.currentUser);
   constructor(private httpClient: HttpClient) {
 
   }
 
-  // registerUser(user): Observable<any> {
-  //   const headers = new HttpHeaders();
-  //   headers.append('Content-Type', 'application/json');
-  //   console.log(BACKEND_URL);
-  //   return this.httpClient.post(`${BACKEND_URL}register`, user, {headers})
-  //     // .subscribe(
-  //     //   res => {
-  //     //     // this.loadAll();
-  //     //     console.log('TODO update user Subject (user added)', res);
-  //     //   },
-  //     //   err => console.error(err)
-  //     // )
-  //     ;
-  // }
+  authenticateUser(user) {this.httpClient.post<
+    {token: string, expiresIn: number, role: Role, userId: string}
+    >(`${BACKEND_URL}login`, user).subscribe(res => {
+        localStorage.setItem('id_token', res.token);
+        this.authStatusListener.next({isLoggedIn: true, email: user.email, role: res.role});
+        return res;
+      });
+  }
 
-  // registerUser(user) {
-  //   const headers = new HttpHeaders();
-  //   headers.append('Content-Type', 'application/json');
-  //   return this.http.post(`${config.apiUrl}/users/register`, user, { headers }).pipe(map((res: any) => res));
-  // }
-
-  // addUser(user) {
-  //   const headers = new HttpHeaders();
-  //   headers.append('Content-Type', 'application/json');
-  //   return this.http.post(`${config.apiUrl}/users/create`, user, { headers }).pipe(map((res: any) => res));
-  // }
-
-  authenticateUser(user) {
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    return this.httpClient.post(`${BACKEND_URL}login`, user, { headers }).pipe(map((res: any) => {
-      this.currentUser = {
-        _id: null,
-        email: user.email,
-        password: user.password,
-        role: res.role
-      };
-      this.userSubject.next(this.currentUser);
-      return res;
-    }
-      ));
+  getAuthStatusListener() {
+    return this.authStatusListener.asObservable();
   }
 
   getRole() {
-    if (this.currentUser) {
-      return this.currentUser.role;
-    } else {
-      return 'Unauthorized';
-    }
+    // FIXME
+    // if (this.currentUser) {
+    //   return this.currentUser.role;
+    // } else {
+    //   return 'Unauthorized';
+    // }
   }
 
   deleteUser(user: IUser): Observable<any> {
@@ -90,8 +70,11 @@ export class AuthService {
 
   logout() {
     this.authToken = null;
-    this.currentUser = null;
-    this.userSubject.next(this.currentUser);
+    this.authStatusListener.next({
+      isLoggedIn: false,
+      email: null,
+      role: null
+    });
     localStorage.clear();
   }
 }

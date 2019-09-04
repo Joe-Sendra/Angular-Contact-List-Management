@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
 
     // Required Fields
     if (!this.validateService.validateRegister(user)) {
-      alert('Fill in all fields');
+      alert('Fill in all fields'); // FIXME
       return false;
     }
 

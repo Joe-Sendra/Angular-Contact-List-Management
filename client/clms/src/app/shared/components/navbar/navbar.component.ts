@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { IUser } from '../../models/user';
-import { Observer, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Role } from '../../models/roles';
 
 @Component({
@@ -10,33 +9,29 @@ import { Role } from '../../models/roles';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
+  private authListenerSubs: Subscription;
   currentEmail: string;
   currentRole: Role;
-  userObserver: Observer<IUser>;
+
   constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.userObserver = {
-      next: (user) => {
-        if (user) {
-          this.currentEmail = user.email;
-          this.currentRole = user.role;
-        } else {
-          this.currentEmail = null;
-          this.currentRole = null;
-        }
-      },
-      error: (err) => { console.log('Observer error: ', err); },
-      complete: () => {}
-    };
-    this.authService.userSubject.subscribe(this.userObserver);
+    this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(authData => {
+      console.log(authData);
+      this.currentEmail = authData.email;
+      this.currentRole = authData.role;
+    });
   }
 
   onLogoutCLick() {
     this.authService.logout();
     this.router.navigate(['login']);
-    return false;
+    return false; // TODO where is this being returned?
+  }
+
+  ngOnDestroy() {
+    this.authListenerSubs.unsubscribe();
   }
 }

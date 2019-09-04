@@ -16,7 +16,6 @@ import { ValidateService } from './shared/services/validate/validate.service';
 import { AuthService } from './shared/services/auth/auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuardService } from './shared/services/guards/auth-guard.service';
-import { TokenInterceptorService } from './shared/services/token-interceptor/token-interceptor.service';
 import { UsersComponent } from './user/components/main/main.component';
 import { UserCreateComponent } from './admin/components/user-create/user-create.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
@@ -26,6 +25,7 @@ import { ContactListComponent } from './user/components/contact-list/contact-lis
 import { ContactCreateComponent } from './user/components/contact-create/contact-create.component';
 import { ContactDetailComponent } from './user/components/contact-detail/contact-detail.component';
 import { ContactsService } from './user/services/contacts.service';
+import { AuthInterceptor } from './shared/services/auth/auth-interceptor';
 
 
 
@@ -57,11 +57,7 @@ import { ContactsService } from './user/services/contacts.service';
     HttpClientModule
   ],
   providers: [ValidateService, AuthService, AuthGuardService, UsersService, ContactsService, SandboxService,
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptorService,
-    multi: true
-  }],
+  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [MainComponent]
 })
 export class AppModule { }

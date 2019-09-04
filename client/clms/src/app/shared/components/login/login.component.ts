@@ -24,21 +24,21 @@ export class LoginComponent implements OnInit {
       password: this.password
     };
 
-    this.authService.authenticateUser(user)
-      .subscribe(
-        res => {
-          console.log(res);
-          localStorage.setItem('id_token', res.token);
-          console.log(res.role);
-          this.router.navigate(['/' + res.role]);
-          // this.router.navigate([res.role]);
-        },
-        err => {
-          console.log(err);
-          if (err.status === 401) {
-            this.hideError = false;
-          }
-        }
-      );
+    this.authService.authenticateUser(user);
+      // .subscribe(
+      //   res => {
+      //     console.log(res);
+      //     localStorage.setItem('id_token', res.token);
+      //     console.log(res.role);
+      //     this.router.navigate(['/' + res.role]);
+      //     // this.router.navigate([res.role]);
+      //   },
+      //   err => {
+      //     console.log(err);
+      //     if (err.status === 401) {
+      //       this.hideError = false;
+      //     }
+      //   }
+      // );
   }
 }

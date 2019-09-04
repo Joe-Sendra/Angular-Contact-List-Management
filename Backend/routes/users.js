@@ -12,19 +12,19 @@ const router = express.Router();
 
 // '/api/user'
 // router.get('', checkAuth, checkRole, UserController.getUsers);
-router.get('', UserController.getUsers);
+router.get('', checkAuth, UserController.getUsers);
 
 // '/api/user/:id'
 // router.get('/:id', checkAuth, checkRole, UserController.getUser);
-router.get('/:id', UserController.getUser);
+router.get('/:id', checkAuth, UserController.getUser);
 
 // '/api/user/:id'
 // router.patch('/:id', checkAuth, checkRole, UserController.updateUser);
-router.patch('/:id', UserController.updateUser);
+router.patch('/:id', checkAuth, UserController.updateUser);
 
 // '/api/user/:id'
 // router.delete('/:id',checkAuth, checkRole, UserController.deleteUser);
-router.delete('/:id', UserController.deleteUser);
+router.delete('/:id', checkAuth, UserController.deleteUser);
 
 // '/api/user/register'
 router.post('/register', UserController.createUser);
