@@ -1,71 +1,157 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { config } from '../../../config';
-import { IUser } from '../../models/user';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+import { environment } from '../../../../environments/environment';
+import { IUser } from '../../models/user';
+import { Role } from '../../models/roles';
+import { Router } from '@angular/router';
+
+const BACKEND_URL = environment.apiUrl + '/users/';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  authToken: any;
-  currentUser: IUser;
-  constructor(private http: HttpClient) {
+  private isAuthenticated = false;
+  private authToken: any;
+  private userId: string;
+  private role: Role;
+  private authStatusListener = new BehaviorSubject<{
+    isLoggedIn: boolean,
+    email: string,
+    role: Role
+  }>({
+      isLoggedIn: false,
+      email: null,
+      role: null
+    });
+  private tokenTimer: any;
+  constructor(private httpClient: HttpClient, private router: Router) {
 
   }
 
-  registerUser(user) {
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    return this.http.post(`${config.apiUrl}/users/register`, user, { headers }).pipe(map((res: any) => res));
-  }
-
-  authenticateUser(user) {
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    return this.http.post(`${config.apiUrl}/users/authenticate`, user, { headers }).pipe(map((res: any) => {
-      this.currentUser = {
-        username: user.username,
-        password: user.password,
-        role: res.role,
-        login: {status: true}
+  authenticateUser(user, returnUrl) {this.httpClient.post<
+    {token: string, expiresIn: number, role: Role, userId: string}
+    >(`${BACKEND_URL}login`, user).subscribe(res => {
+      const token = res.token;
+      if (token) {
+        const expiresInDuration = res.expiresIn;
+        this.setAuthTimer(expiresInDuration);
+        this.isAuthenticated = true;
+        this.userId = res.userId;
+        this.role  = res.role;
+        this.authStatusListener.next({isLoggedIn: true, email: user.email, role: this.role});
+        const now = new Date();
+        const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
+        console.log(expirationDate);
+        this.saveAuthData(token, expirationDate, this.userId, this.role);
+        console.log(returnUrl);
+        if (returnUrl) {
+          // login successful so redirect to return url
+          this.router.navigateByUrl(returnUrl);
+        } else {
+          this.router.navigate(['/' + res.role]);
+        }
       }
-      return res; }
-      ));
+    });
+  }
+
+  getAuthStatusListener() {
+    return this.authStatusListener.asObservable();
+  }
+
+  getIsAuth() {
+    return this.isAuthenticated;
+  }
+
+  getUserId() {
+    return this.userId;
   }
 
   getRole() {
-    if (this.currentUser) {
-      return this.currentUser.role;
-    } else {
-      return 'Unauthorized';
-    }
+    return this.role;
   }
 
-  getProfile() {
-    const headers = new HttpHeaders();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
-    return this.http.get(`${config.apiUrl}/users/profile`, { headers }).pipe(map((res) => res));
-  }
-
-  loadToken() {
-    const token = localStorage.getItem('id_token');
-    this.authToken = token;
+  deleteUser(user: IUser): Observable<any> {
+    // TODO need to verify role
+    return this.httpClient.delete(`${BACKEND_URL}${user._id}`);
   }
 
   loggedIn() {
-    return !!localStorage.getItem('id_token');
+    return !!localStorage.getItem('token'); // FIXME
   }
 
   getToken() {
-    return localStorage.getItem('id_token');
+    return localStorage.getItem('token'); // FIXME
+  }
+
+  autoAuthUser() {
+    const authInformation = this.getAuthData();
+    console.log(authInformation);
+    if (!authInformation) {
+      return;
+    }
+    const now = new Date();
+    const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
+    console.log(expiresIn);
+    if (expiresIn > 0) {
+      this.authToken = authInformation.token;
+      this.isAuthenticated = true;
+      this.userId = authInformation.userId;
+      this.role = authInformation.role;
+      this.setAuthTimer(expiresIn / 1000);
+      this.authStatusListener.next({isLoggedIn: true, email: null, role: null}); // FIXME need to return values instead of Null
+    }
   }
 
   logout() {
     this.authToken = null;
-    this.currentUser = null;
-    localStorage.clear();
+    this.isAuthenticated = false;
+    this.authStatusListener.next({
+      isLoggedIn: false,
+      email: null,
+      role: null
+    });
+    this.userId = null;
+    this.role = null;
+    this.clearAuthData();
+    clearTimeout(this.tokenTimer);
+    this.router.navigate(['/']);
+  }
+
+  private setAuthTimer(duration: number) {
+    this.tokenTimer = setTimeout(() => {
+      this.logout();
+    }, duration * 1000);
+  }
+
+  private saveAuthData(token: string, expirationDate: Date, userId: string, role: Role) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('expiration', expirationDate.toISOString());
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('role', role);
+  }
+
+  private clearAuthData() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiration');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+  }
+
+  private getAuthData() {
+    const token = localStorage.getItem('token');
+    const expirationDate = localStorage.getItem('expiration');
+    const userId = localStorage.getItem('userId');
+    const role = Role[localStorage.getItem('role')];
+    if (!token || !expirationDate) {
+      return;
+    }
+    return {
+      token,
+      expirationDate: new Date(expirationDate),
+      userId,
+      role
+    };
   }
 }

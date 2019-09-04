@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -8,34 +8,26 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string;
+  email: string;
   password: string;
   hideError: boolean;
+  returnUrl: string;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.hideError = true;
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl;
   }
 
   onLoginSubmit() {
     const user = {
-      username: this.username,
+      email: this.email,
       password: this.password
     };
 
-    this.authService.authenticateUser(user)
-      .subscribe(
-        res => {
-          localStorage.setItem('id_token', res.token);
-          this.router.navigate(['/' + res.role]);
-        },
-        err => {
-          console.log(err);
-          if (err.status === 401) {
-            this.hideError = false;
-          }
-        }
-      );
+    this.authService.authenticateUser(user, this.returnUrl);
   }
+
 }

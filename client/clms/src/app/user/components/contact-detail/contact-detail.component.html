@@ -1,0 +1,38 @@
+{{ contact._id }}
+<ul>
+  <li>{{ contact.name.first }} - {{ contact.name.middle }} - {{ contact.name.last }} - {{ contact.name.suffix }}</li>
+  <li>
+    {{ contact.email.home }}
+  </li>
+  <li>
+      {{ contact.email.work }}
+  </li>
+</ul>
+<ul>
+  <li>
+      {{ contact.address.home.street }}, {{ contact.address.home.city }}, {{ contact.address.home.state }}, {{ contact.address.home.zipcode }}
+  </li>
+  <li>
+      {{ contact.address.work.street }}, {{ contact.address.work.city }}, {{ contact.address.work.state }}, {{ contact.address.work.zipcode }}
+  </li>
+  <li>
+      {{ contact.address.other.street }}, {{ contact.address.other.city }}, {{ contact.address.other.state }}, {{ contact.address.other.zipcode }}
+  </li>
+</ul>
+<ul>
+  <li>
+      {{ contact.phone.mobile }}
+  </li>
+  <li>
+      {{ contact.phone.home }}
+  </li>
+  <li>
+      {{ contact.phone.work }}
+  </li>
+  <li>
+      {{ contact.phone.other }}
+  </li>
+</ul>
+<td><a class="btn btn-primary" [routerLink]="['/user/edit', contact._id]">Edit</a></td>
+<td><button class="btn btn-danger" (click)="onDeleteContact(contact._id)">Delete</button></td>
+

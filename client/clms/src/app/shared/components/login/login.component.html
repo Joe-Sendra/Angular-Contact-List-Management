@@ -1,28 +1,29 @@
-<div class="alert alert-danger" role="alert" [hidden]="hideError">
-    Incorrect username or password
-</div>
-<h2 class="page-header">Login</h2>
-<form (ngSubmit)="onLoginSubmit()">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input #uName="ngModel" name="username" type="text" placeholder="Username" [(ngModel)]="username" [ngModelOptions]="{standalone:true}" class="form-control" required/>
-      <div *ngIf="uName.invalid && (uName.dirty || uName.touched)"
+<div class="container">
+  <div class="alert alert-danger" role="alert" [hidden]="hideError">
+      Incorrect username or password
+  </div>
+  <h2 class="page-header">Login</h2>
+  <form (ngSubmit)="onLoginSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input #uName="ngModel" name="email" type="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone:true}" class="form-control" required/>
+        <!-- <div *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="alert alert-danger">
+          <div *ngIf="email.hasError('required')">
+            Email is required.
+          </div>
+        </div> -->
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input #uPass="ngModel" name="password" type="password" placeholder="Password" [(ngModel)]="password" [ngModelOptions]="{standalone:true}" class="form-control" required/>
+        <div *ngIf="uPass.invalid && (uPass.dirty || uPass.touched)"
         class="alert alert-danger">
-        <div *ngIf="uName.hasError('required')">
-          Username is required.
+        <div *ngIf="uPass.hasError('required')">
+          Password is required.
         </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input #uPass="ngModel" name="password" type="password" placeholder="Password" [(ngModel)]="password" [ngModelOptions]="{standalone:true}" class="form-control" required/>
-      <div *ngIf="uPass.invalid && (uPass.dirty || uPass.touched)"
-      class="alert alert-danger">
-      <div *ngIf="uPass.hasError('required')">
-        Password is required.
       </div>
-    </div>
-    </div>
-    <input type="submit" value="Submit" class="btn btn-primary"/>
-</form>
-
+      <input type="submit" value="Submit" class="btn btn-primary"/>
+  </form>
+</div>

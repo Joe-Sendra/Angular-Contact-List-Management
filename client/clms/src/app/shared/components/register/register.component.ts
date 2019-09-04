@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidateService } from '../../services/validate/validate.service';
-import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { UsersService } from 'src/app/user/services/users.service';
+import { Role } from '../../models/roles';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -9,13 +11,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  username: string;
+  email: string;
   password: string;
   hideError: boolean;
   display: string;
+  newRegisteredUser: {email: string; password: string; role: Role};
   constructor(private validateService: ValidateService,
-              private authService: AuthService,
-              private router: Router) { }
+              private userService: UsersService,
+              private router: Router,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.hideError = true;
@@ -24,22 +28,24 @@ export class RegisterComponent implements OnInit {
 
   onRegisterSubmit() {
     const user = {
-      username: this.username,
-      password: this.password
+      email: this.email,
+      password: this.password,
+      role: Role.user
     };
 
     // Required Fields
     if (!this.validateService.validateRegister(user)) {
-      alert('Fill in all fields');
+      alert('Fill in all fields'); // FIXME
       return false;
     }
 
-    this.authService.registerUser(user)
+    this.userService.registerUser(user)
       .subscribe(
         res => {
+          console.log('TODO update user Subject (user added)', res);
           localStorage.setItem('id_token', res.token);
           this.display = 'block';
-
+          this.newRegisteredUser = user;
         },
         err => {
           if (!err.isUsernameAvailable) {
@@ -48,7 +54,9 @@ export class RegisterComponent implements OnInit {
         }
       );
   }
-  goToLogin() {
-    this.router.navigate(['/login']);
+
+  autoLogin(user) {
+    this.authService.authenticateUser(user, null);
   }
+
 }

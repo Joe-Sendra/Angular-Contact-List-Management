@@ -1,0 +1,75 @@
+
+<div class="container">
+  <h2 class="page-header">{{ mode }} Contact</h2>
+  <form [formGroup]="form" (ngSubmit)="onSaveContact()">
+    <div class="form-group">
+      <input formControlName="firstName" type="text" placeholder="First Name" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="middleName" type="text" placeholder="Middle Name" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="lastName" type="text" placeholder="Last Name" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="nameSuffix" type="text" placeholder="Suffix" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="emailHome" type="text" placeholder="Email (home)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="emailWork" type="text" placeholder="Email (work)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="addressHomeStreet" type="text" placeholder="Street (home)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="addressHomeCity" type="text" placeholder="City (home)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="addressHomeState" type="text" placeholder="State (home)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="addressHomeZipcode" type="text" placeholder="Zipcode (home)" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input formControlName="addressWorkStreet" type="text" placeholder="Street (work)" class="form-control" />
+      </div>
+      <div class="form-group">
+        <input formControlName="addressWorkCity" type="text" placeholder="City (work)" class="form-control" />
+      </div>
+      <div class="form-group">
+        <input formControlName="addressWorkState" type="text" placeholder="State (work)" class="form-control" />
+      </div>
+      <div class="form-group">
+        <input formControlName="addressWorkZipcode" type="text" placeholder="Zipcode (work)" class="form-control" />
+      </div>
+      <div class="form-group">
+          <input formControlName="addressOtherStreet" type="text" placeholder="Street (other)" class="form-control" />
+        </div>
+        <div class="form-group">
+          <input formControlName="addressOtherCity" type="text" placeholder="City (other)" class="form-control" />
+        </div>
+        <div class="form-group">
+          <input formControlName="addressOtherState" type="text" placeholder="State (other)" class="form-control" />
+        </div>
+        <div class="form-group">
+          <input formControlName="addressOtherZipcode" type="text" placeholder="Zipcode (other)" class="form-control" />
+        </div>
+    <div class="form-group">
+      <input formControlName="phoneMobile" type="text" placeholder="Phone (mobile)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="phoneHome" type="text" placeholder="Phone (home)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="phoneWork" type="text" placeholder="Phone (work)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <input formControlName="phoneOther" type="text" placeholder="Phone (other)" class="form-control" />
+    </div>
+    <button class="btn btn-primary">Save User</button>
+  </form>
+</div>
+
+

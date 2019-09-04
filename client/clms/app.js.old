@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
@@ -21,16 +20,13 @@ mongoose.connection.on('error', (err) => {
 
 const app = express();
 
-const users = require('./routes/users');
+const userRoutes = require('./routes/users');
 
 // Port Number
 const port = 3000;
 
 // CORS Middleware
 app.use(cors());
-
-// Set Static Folder
-app.use(express.static(path.join(__dirname,'public')));
 
 // Body Parser Middleware
 app.use(bodyParser.json());
@@ -41,7 +37,7 @@ app.use(passport.session());
 
 require('./config/passport')(passport);
 
-app.use('/users', users);
+app.use('/users', userRoutes);
 
 // Index Route
 app.get('/', (req, res) => {
