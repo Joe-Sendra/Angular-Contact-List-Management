@@ -1,7 +1,7 @@
 const Contact = require('../models/contact');
 
 exports.getContacts = (req, res, next) => {
-  Contact.find({})
+  Contact.find({creator: req.userData.userId})
  .then((data)=>{
   res.status(200).json(data);
   })
@@ -15,8 +15,10 @@ exports.getContacts = (req, res, next) => {
 }
 
 exports.getContact = (req, res, next) => {
-  Contact.findById(req.params.id).then(contact => {
-    if (contact) {
+  Contact.find({ _id:req.params.id, creator: req.userData.userId}).then(contact => {
+    console.log(req.userData.userId);
+    console.log(contact);
+    if (contact.length > 0) {
       res.status(200).json(contact);
     } else {
       res.status(404).json({message: 'Contact not found!'});
