@@ -8,7 +8,6 @@ import { UsersComponent } from './user/components/main/main.component';
 import { AdminHomeComponent } from './admin/components/home/home.component';
 import { UserHomeComponent } from './user/components/home/home.component';
 import { RegisterComponent } from './shared/components/register/register.component';
-import { AuthGuardService } from './shared/services/guards/auth-guard.service';
 import { RoleGuardService as RoleGuard } from './shared/services/guards/role-guard.service';
 import { AdminUsersComponent } from './admin/components/users/users.component';
 import { UserCreateComponent } from './admin/components/user-create/user-create.component';

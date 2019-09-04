@@ -52,7 +52,7 @@ exports.createContact = (req, res, next)=> {
 }
 
 exports.updateContact = (req, res, next) => {
-  const contact = new Contact(req.body);
+  const contact = new Contact({...req.body, creator: req.userData.userId});
   contact._id = req.params.id;
   Contact.updateOne({ _id: req.params.id, creator: req.userData.userId }, contact).then(result => {
     if (result.n > 0) {
