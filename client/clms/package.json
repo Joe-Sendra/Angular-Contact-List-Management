@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "startBEserver": "nodemon ../../backend/server.js",
     "start": "ng serve",
     "dev": "concurrently --kill-others \"node app\" \"ng serve\"",
     "build": "ng build",
