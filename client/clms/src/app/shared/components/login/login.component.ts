@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -25,20 +25,6 @@ export class LoginComponent implements OnInit {
     };
 
     this.authService.authenticateUser(user);
-      // .subscribe(
-      //   res => {
-      //     console.log(res);
-      //     localStorage.setItem('id_token', res.token);
-      //     console.log(res.role);
-      //     this.router.navigate(['/' + res.role]);
-      //     // this.router.navigate([res.role]);
-      //   },
-      //   err => {
-      //     console.log(err);
-      //     if (err.status === 401) {
-      //       this.hideError = false;
-      //     }
-      //   }
-      // );
   }
+
 }

@@ -27,8 +27,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onLogoutCLick() {
     this.authService.logout();
-    this.router.navigate(['login']);
-    return false; // TODO where is this being returned?
+    // this.router.navigate(['login']);
   }
 
   ngOnDestroy() {

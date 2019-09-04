@@ -25,9 +25,6 @@ export class UsersService {
 
   // Return all users in the DB
   getUsers(): Observable<any> {
-    const headers = new HttpHeaders();
-    // this.loadToken();
-    // headers.append('Authorization', this.authToken);
     return this.httpClient.get(`${BACKEND_URL}`);
   }
 

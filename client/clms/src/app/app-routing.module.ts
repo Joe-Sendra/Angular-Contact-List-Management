@@ -15,6 +15,7 @@ import { UserCreateComponent } from './admin/components/user-create/user-create.
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { ContactListComponent } from './user/components/contact-list/contact-list.component';
 import { ContactCreateComponent } from './user/components/contact-create/contact-create.component';
+import { AuthGuard } from './shared/services/auth/guards/auth.guard';
 
 
 
@@ -50,21 +51,19 @@ const routes: Routes = [
   {path: 'admin', component: AdminComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'home'},
-      {path: 'home', component: AdminHomeComponent},
-      {path: 'users', component: AdminUsersComponent},
-      {path: 'create', component: UserCreateComponent},
-      {path: 'edit/:userId', component: UserCreateComponent},
-      {path: 'logout', component: LoginComponent}
+      {path: 'home', component: AdminHomeComponent, canActivate: [AuthGuard]},
+      {path: 'users', component: AdminUsersComponent, canActivate: [AuthGuard]},
+      {path: 'create', component: UserCreateComponent, canActivate: [AuthGuard]},
+      {path: 'edit/:userId', component: UserCreateComponent, canActivate: [AuthGuard]}
     ]
   },
   {path: 'user', component: UsersComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'home'},
-      {path: 'home', component: UserHomeComponent},
-      {path: 'contacts', component: ContactListComponent},
-      {path: 'edit/:contactId', component: ContactCreateComponent},
-      {path: 'create', component: ContactCreateComponent},
-      {path: 'logout', component: LoginComponent}
+      {path: 'home', component: UserHomeComponent, canActivate: [AuthGuard]},
+      {path: 'contacts', component: ContactListComponent, canActivate: [AuthGuard]},
+      {path: 'edit/:contactId', component: ContactCreateComponent, canActivate: [AuthGuard]},
+      {path: 'create', component: ContactCreateComponent, canActivate: [AuthGuard]}
     ]
   },
   {path: '**', redirectTo: '/'}
@@ -72,6 +71,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {enableTracing: false})],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }
