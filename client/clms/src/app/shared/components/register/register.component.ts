@@ -3,6 +3,7 @@ import { ValidateService } from '../../services/validate/validate.service';
 import { Router } from '@angular/router';
 import { UsersService } from 'src/app/user/services/users.service';
 import { Role } from '../../models/roles';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -14,9 +15,11 @@ export class RegisterComponent implements OnInit {
   password: string;
   hideError: boolean;
   display: string;
+  newRegisteredUser: {email: string; password: string; role: Role};
   constructor(private validateService: ValidateService,
               private userService: UsersService,
-              private router: Router) { }
+              private router: Router,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.hideError = true;
@@ -42,7 +45,7 @@ export class RegisterComponent implements OnInit {
           console.log('TODO update user Subject (user added)', res);
           localStorage.setItem('id_token', res.token);
           this.display = 'block';
-
+          this.newRegisteredUser = user;
         },
         err => {
           if (!err.isUsernameAvailable) {
@@ -52,7 +55,8 @@ export class RegisterComponent implements OnInit {
       );
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']);
+  autoLogin(user) {
+    this.authService.authenticateUser(user, null);
   }
+
 }
