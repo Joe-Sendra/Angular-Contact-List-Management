@@ -32,7 +32,7 @@ exports.getContact = (req, res, next) => {
 }
 
 exports.createContact = (req, res, next)=> {
-  const contact = new Contact(req.body)
+  const contact = new Contact({...req.body, creator: req.userData.userId});
   contact.save().then(createdContact => {
     // Response should include id that was created by MongoDB
     res.status(201).json({
@@ -54,7 +54,7 @@ exports.createContact = (req, res, next)=> {
 exports.updateContact = (req, res, next) => {
   const contact = new Contact(req.body);
   contact._id = req.params.id;
-  Contact.updateOne({ _id: req.params.id }, contact).then(result => {
+  Contact.updateOne({ _id: req.params.id, creator: req.userData.userId }, contact).then(result => {
     if (result.n > 0) {
       res.status(200).json({ message: 'Update successful!' });
     } else {

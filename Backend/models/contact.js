@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const contactSchema = mongoose.Schema({
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: {
     first: {type: String, required: true},
     last: {type: String, required: true},
