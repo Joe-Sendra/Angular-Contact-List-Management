@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -11,11 +11,14 @@ export class LoginComponent implements OnInit {
   email: string;
   password: string;
   hideError: boolean;
+  returnUrl: string;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.hideError = true;
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl;
   }
 
   onLoginSubmit() {
@@ -24,7 +27,7 @@ export class LoginComponent implements OnInit {
       password: this.password
     };
 
-    this.authService.authenticateUser(user);
+    this.authService.authenticateUser(user, this.returnUrl);
   }
 
 }

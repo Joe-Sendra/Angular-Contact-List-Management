@@ -15,6 +15,7 @@ export class AuthService {
   private isAuthenticated = false;
   private authToken: any;
   private userId: string;
+  private role: Role;
   private authStatusListener = new BehaviorSubject<{
     isLoggedIn: boolean,
     email: string,
@@ -29,7 +30,7 @@ export class AuthService {
 
   }
 
-  authenticateUser(user) {this.httpClient.post<
+  authenticateUser(user, returnUrl) {this.httpClient.post<
     {token: string, expiresIn: number, role: Role, userId: string}
     >(`${BACKEND_URL}login`, user).subscribe(res => {
       const token = res.token;
@@ -38,12 +39,19 @@ export class AuthService {
         this.setAuthTimer(expiresInDuration);
         this.isAuthenticated = true;
         this.userId = res.userId;
-        this.authStatusListener.next({isLoggedIn: true, email: user.email, role: res.role});
+        this.role  = res.role;
+        this.authStatusListener.next({isLoggedIn: true, email: user.email, role: this.role});
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
         console.log(expirationDate);
-        this.saveAuthData(token, expirationDate, this.userId);
-        this.router.navigate(['/' + res.role]);
+        this.saveAuthData(token, expirationDate, this.userId, this.role);
+        console.log(returnUrl);
+        if (returnUrl) {
+          // login successful so redirect to return url
+          this.router.navigateByUrl(returnUrl);
+        } else {
+          this.router.navigate(['/' + res.role]);
+        }
       }
     });
   }
@@ -61,12 +69,7 @@ export class AuthService {
   }
 
   getRole() {
-    // FIXME
-    // if (this.currentUser) {
-    //   return this.currentUser.role;
-    // } else {
-    //   return 'Unauthorized';
-    // }
+    return this.role;
   }
 
   deleteUser(user: IUser): Observable<any> {
@@ -95,6 +98,7 @@ export class AuthService {
       this.authToken = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
+      this.role = authInformation.role;
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next({isLoggedIn: true, email: null, role: null}); // FIXME need to return values instead of Null
     }
@@ -109,6 +113,7 @@ export class AuthService {
       role: null
     });
     this.userId = null;
+    this.role = null;
     this.clearAuthData();
     clearTimeout(this.tokenTimer);
     this.router.navigate(['/']);
@@ -120,29 +125,33 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, role: Role) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
+    localStorage.setItem('role', role);
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
     localStorage.removeItem('userId');
+    localStorage.removeItem('role');
   }
 
   private getAuthData() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
+    const role = Role[localStorage.getItem('role')];
     if (!token || !expirationDate) {
       return;
     }
     return {
       token,
       expirationDate: new Date(expirationDate),
-      userId
+      userId,
+      role
     };
   }
 }

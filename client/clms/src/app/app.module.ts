@@ -17,8 +17,6 @@ import { AuthService } from './shared/services/auth/auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UsersComponent } from './user/components/main/main.component';
 import { UserCreateComponent } from './admin/components/user-create/user-create.component';
-import { SandboxComponent } from './sandbox/sandbox.component';
-import { SandboxService } from './sandbox/sandbox.service';
 import { UsersService } from './user/services/users.service';
 import { ContactListComponent } from './user/components/contact-list/contact-list.component';
 import { ContactCreateComponent } from './user/components/contact-create/contact-create.component';
@@ -45,8 +43,7 @@ import { AuthInterceptor } from './shared/services/auth/auth-interceptor';
     ContactCreateComponent,
     ContactDetailComponent,
     RegisterComponent,
-    NavbarComponent,
-    SandboxComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +52,7 @@ import { AuthInterceptor } from './shared/services/auth/auth-interceptor';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [ValidateService, AuthService, UsersService, ContactsService, SandboxService,
+  providers: [ValidateService, AuthService, UsersService, ContactsService,
   {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [MainComponent]
 })

@@ -60,39 +60,31 @@
         </li>
       </ul>
       <ul class="navbar-nav navbar-right">
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
-          <a class="nav-link" [routerLink]="['/admin/home']">
-            AdminDashboard
-          </a>
-        </li>
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
-          <a class="nav-link" [routerLink]="['/user/home']">
-            UserDashboard
-          </a>
-        </li>
-        <li class="nav-item dropdown" >
+        <li class="nav-item dropdown" *ngIf="currentRole === 'admin'">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Users
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="['/admin/home']">Dashboard</a>
             <a class="dropdown-item" [routerLink]="['/admin/users']">View</a>
             <a class="dropdown-item" [routerLink]="['/admin/create']">Create</a>
           </div>
         </li>
-        <li class="nav-item dropdown" >
+        <li class="nav-item dropdown" *ngIf="currentRole === 'user'">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Contacts
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" [routerLink]="['/user/home']">Dashboard</a>
             <a class="dropdown-item" [routerLink]="['/user/contacts']">View</a>
             <a class="dropdown-item" [routerLink]="['/user/create']">Create</a>
 
           </div>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngIf="!authService.loggedIn()">
           <a class="nav-link" [routerLink]="['/login']">Login <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngIf="!authService.loggedIn()">
           <a class="nav-link" [routerLink]="['/register']">Register</a>
         </li>
         <li class="nav-item" *ngIf="authService.loggedIn()">
