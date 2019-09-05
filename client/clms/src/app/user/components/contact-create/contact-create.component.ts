@@ -13,17 +13,26 @@ export class ContactCreateComponent implements OnInit {
   form: FormGroup;
   mode = 'Create';
   contact: IContact;
+  success = false;
 
   constructor(
     private contactService: ContactsService,
     private route: ActivatedRoute
   ) {}
 
+  get firstName() {
+    return this.form.get('firstName');
+  }
+
+  get lastName() {
+    return this.form.get('lastName');
+  }
+
   ngOnInit() {
     this.form = new FormGroup({
       firstName: new FormControl(null, {validators: [Validators.required]}),
       middleName: new FormControl(null),
-      lastName: new FormControl(null),
+      lastName: new FormControl(null, {validators: [Validators.required]}),
       nameSuffix: new FormControl(null),
       emailHome: new FormControl(null),
       emailWork: new FormControl(null),
@@ -52,43 +61,44 @@ export class ContactCreateComponent implements OnInit {
         console.log('You are in Edit mode');
         this._contactID = paramMap.get('contactId');
         this.contactService.getContact(this._contactID).subscribe((contactData: IContact) => {
+          console.log(contactData);
           this.contact = {
-            _id: contactData._id,
+            _id: contactData[0]._id,
             address: {
               home: {
-                street: contactData.address.home.street,
-                city: contactData.address.home.city,
-                state: contactData.address.home.state,
-                zipcode: contactData.address.home.zipcode
+                street: contactData[0].address.home.street,
+                city: contactData[0].address.home.city,
+                state: contactData[0].address.home.state,
+                zipcode: contactData[0].address.home.zipcode
               },
               work: {
-                street: contactData.address.work.street,
-                city: contactData.address.work.city,
-                state: contactData.address.work.state,
-                zipcode: contactData.address.work.zipcode
+                street: contactData[0].address.work.street,
+                city: contactData[0].address.work.city,
+                state: contactData[0].address.work.state,
+                zipcode: contactData[0].address.work.zipcode
               },
               other: {
-                street: contactData.address.other.street,
-                city: contactData.address.other.city,
-                state: contactData.address.other.state,
-                zipcode: contactData.address.other.zipcode
+                street: contactData[0].address.other.street,
+                city: contactData[0].address.other.city,
+                state: contactData[0].address.other.state,
+                zipcode: contactData[0].address.other.zipcode
               }
             },
             name: {
-              first: contactData.name.first,
-              last: contactData.name.last,
-              middle: contactData.name.middle,
-              suffix: contactData.name.suffix
+              first: contactData[0].name.first,
+              last: contactData[0].name.last,
+              middle: contactData[0].name.middle,
+              suffix: contactData[0].name.suffix
             },
             email: {
-              home: contactData.email.home,
-              work: contactData.email.work
+              home: contactData[0].email.home,
+              work: contactData[0].email.work
             },
             phone: {
-              mobile: contactData.phone.mobile,
-              home: contactData.phone.home,
-              work: contactData.phone.work,
-              other: contactData.phone.other
+              mobile: contactData[0].phone.mobile,
+              home: contactData[0].phone.home,
+              work: contactData[0].phone.work,
+              other: contactData[0].phone.other
             }
           };
           this.form.setValue({
@@ -177,7 +187,13 @@ export class ContactCreateComponent implements OnInit {
       console.log('Updating contact...');
       this.contactService.editContact(contact).subscribe(res => {}, err => console.error(err));
     }
-    this.form.reset();
+    this.success = true;
   }
 
+  resetForm() {
+    this.success = false;
+    if (this.mode === 'Create') {
+      this.form.reset();
+    }
+  }
 }
