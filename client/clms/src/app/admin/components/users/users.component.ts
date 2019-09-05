@@ -3,6 +3,7 @@ import { IUser } from 'src/app/shared/models/user';
 import { Subscription } from 'rxjs';
 import { UsersService } from 'src/app/user/services/users.service';
 import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-users',
@@ -13,7 +14,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   private userSubscription: Subscription;
   users: IUser[];
-  constructor(private userService: UsersService) { }
+  constructor(private userService: UsersService, private router: Router) { }
 
   ngOnInit() {
     this.userSubscription = this.userService.users.subscribe(
@@ -24,30 +25,13 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  editUser(user: IUser) {
-    console.log('You are trying to edit: ', user);
+  editUser(userEmail: string) {
+    this.router.navigate(['/admin/edit/' + userEmail], { queryParams: { returnUrl: this.router.routerState.snapshot.url }});
   }
 
   onDeleteUser(user: IUser) {
     this.userService.deleteUser(user._id);
-    // console.log('sending this to authService:', user);
-    // this.authService.deleteUser(user)
-    //   .subscribe(
-    //    () => {},
-    //    (err) => {console.log(err); },
-    //    () => {});
-    // this.loadUsers();
   }
-
-  // loadUsers() {
-  //   this.authService.getUsers()
-  //   .subscribe(
-  //     res => {
-  //       this.users = res;
-  //     },
-  //     err => {}
-  //   );
-  // }
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();

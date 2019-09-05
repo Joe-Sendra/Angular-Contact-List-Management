@@ -10,7 +10,8 @@
         <tr *ngFor="let user of users">
             <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
-            <td><a class="btn btn-primary" [routerLink]="['/admin/edit', user._id]">Edit</a></td>
+            <!-- <td><a class="btn btn-primary" [routerLink]="['/admin/edit', user._id]">Edit</a></td> -->
+            <td><button class="btn btn-primary" (click)="editUser(user._id)">Edit</button></td>
             <td><button class="btn btn-danger" (click)="onDeleteUser(user)">Delete</button></td>
         </tr>
     </tbody>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Role } from 'src/app/shared/models/roles';
 import { UsersService } from 'src/app/user/services/users.service';
@@ -18,14 +18,17 @@ export class UserCreateComponent implements OnInit {
   email: string;
   password: string;
   role: Role = Role.user;
+  returnUrl: string;
 
   constructor(
     private userService: UsersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
-
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl;
+    console.log(this.returnUrl);
     this.form = new FormGroup({
       email: new FormControl(null, { validators: [Validators.required]}),
       password: new FormControl(null, {validators: [Validators.required]}),
@@ -87,6 +90,8 @@ export class UserCreateComponent implements OnInit {
         role: this.form.value.role
       };
       this.userService.editUser(user).subscribe(res => {}, err => console.error(err));
+      console.log(this.returnUrl);
+      this.router.navigateByUrl(this.returnUrl);
     }
     this.form.reset({ role: Role.user });
   }

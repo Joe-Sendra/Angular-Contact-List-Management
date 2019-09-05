@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IContact } from 'src/app/shared/models/contacts';
 import { ContactsService } from '../../services/contacts.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
   templateUrl: './contact-create.component.html'
@@ -14,10 +14,12 @@ export class ContactCreateComponent implements OnInit {
   mode = 'Create';
   contact: IContact;
   success = false;
+  returnUrl: string;
 
   constructor(
     private contactService: ContactsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   get firstName() {
@@ -29,6 +31,7 @@ export class ContactCreateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl;
     this.form = new FormGroup({
       firstName: new FormControl(null, {validators: [Validators.required]}),
       middleName: new FormControl(null),
@@ -186,6 +189,7 @@ export class ContactCreateComponent implements OnInit {
       contact._id = this._contactID;
       console.log('Updating contact...');
       this.contactService.editContact(contact).subscribe(res => {}, err => console.error(err));
+      this.router.navigateByUrl(this.returnUrl);
     }
     this.success = true;
   }
