@@ -1,8 +1,17 @@
-<h4>To view contacts</h4>
-<li>
-    <a [routerLink]="['/user/contacts']">Contacts</a>
-</li>
-<h4>To add contacts</h4>
-<li>
-    <a [routerLink]="['/user/create']">Add contact</a>
-</li>
+<br>
+<div class="card bg-light mb-3" style="max-width: 20rem;">
+  <div class="card-header"><h2>View Contacts</h2></div>
+  <div class="card-body">
+    <!-- <h4 class="card-title">View Contacts</h4> -->
+    <p class="card-text">Can view/edit all contacts</p>
+    <a class="btn btn-primary btn-block" [routerLink]="['/user/contacts']">View</a>
+  </div>
+</div>
+<div class="card bg-light mb-3" style="max-width: 20rem;">
+  <div class="card-header"><h2>Add Contacts</h2></div>
+  <div class="card-body">
+    <!-- <h4 class="card-title">Add contacts</h4> -->
+    <p class="card-text">Can add contacts</p>
+    <a class="btn btn-primary btn-block" [routerLink]="['/user/create']">Add contact</a>
+  </div>
+</div>
