@@ -13,17 +13,26 @@ export class ContactCreateComponent implements OnInit {
   form: FormGroup;
   mode = 'Create';
   contact: IContact;
+  success = false;
 
   constructor(
     private contactService: ContactsService,
     private route: ActivatedRoute
   ) {}
 
+  get firstName() {
+    return this.form.get('firstName');
+  }
+
+  get lastName() {
+    return this.form.get('lastName');
+  }
+
   ngOnInit() {
     this.form = new FormGroup({
       firstName: new FormControl(null, {validators: [Validators.required]}),
       middleName: new FormControl(null),
-      lastName: new FormControl(null),
+      lastName: new FormControl(null, {validators: [Validators.required]}),
       nameSuffix: new FormControl(null),
       emailHome: new FormControl(null),
       emailWork: new FormControl(null),
@@ -178,7 +187,13 @@ export class ContactCreateComponent implements OnInit {
       console.log('Updating contact...');
       this.contactService.editContact(contact).subscribe(res => {}, err => console.error(err));
     }
-    this.form.reset();
+    this.success = true;
   }
 
+  resetForm() {
+    this.success = false;
+    if (this.mode === 'Create') {
+      this.form.reset();
+    }
+  }
 }
