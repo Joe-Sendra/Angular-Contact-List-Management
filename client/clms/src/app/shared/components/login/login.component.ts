@@ -10,13 +10,11 @@ import { AuthService } from '../../services/auth/auth.service';
 export class LoginComponent implements OnInit {
   email: string;
   password: string;
-  hideError: boolean;
   returnUrl: string;
 
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.hideError = true;
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl;
   }
@@ -26,7 +24,6 @@ export class LoginComponent implements OnInit {
       email: this.email,
       password: this.password
     };
-
     this.authService.authenticateUser(user, this.returnUrl);
   }
 

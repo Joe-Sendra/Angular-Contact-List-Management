@@ -13,7 +13,6 @@ import { AuthService } from '../../services/auth/auth.service';
 export class RegisterComponent implements OnInit {
   email: string;
   password: string;
-  hideError: boolean;
   display: string;
   newRegisteredUser: {email: string; password: string; role: Role};
   constructor(private validateService: ValidateService,
@@ -22,7 +21,6 @@ export class RegisterComponent implements OnInit {
               private authService: AuthService) { }
 
   ngOnInit() {
-    this.hideError = true;
     this.display = 'none';
   }
 
@@ -46,11 +44,6 @@ export class RegisterComponent implements OnInit {
           localStorage.setItem('id_token', res.token);
           this.display = 'block';
           this.newRegisteredUser = user;
-        },
-        err => {
-          if (!err.isUsernameAvailable) {
-            this.hideError = false;
-          }
         }
       );
   }

@@ -11,7 +11,6 @@ exports.createUser = (req, res, next) => {
         password: hash,
         role: req.body.role
       });
-      console.log(user);
       user.save()
         .then(result => {
           res.status(201).json({
@@ -20,10 +19,16 @@ exports.createUser = (req, res, next) => {
           });
         })
         .catch(err => {
-          res.status(500).json({
-            message: 'Invalid authentication credentials!',
-            error: err
-          });
+          if (err.name === 'ValidationError') {
+            res.status(500).json({
+              message: 'Email entered is not available!'
+            });
+          } else {
+            res.status(500).json({
+              message: 'Invalid authentication credentials!',
+              error: err
+            });
+          };
         });
     });
 }
@@ -33,7 +38,7 @@ exports.userLogin = (req, res, next) => {
   User.findOne({email: req.body.email}).then(user => {
     if (!user) {
       return res.status(401).json({
-        message: 'Auth failed'
+        message: 'Auth failed: Incorrect email or password'
       });
     }
     fetchedUser = user;
@@ -42,7 +47,7 @@ exports.userLogin = (req, res, next) => {
   .then(result => {
     if (!result) {
       return res.status(401).json({
-        message: 'Auth failed'
+        message: 'Invalid authentication credentials!'
       });
     }
     // Email and password match, create token

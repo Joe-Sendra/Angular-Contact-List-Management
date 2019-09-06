@@ -30,9 +30,9 @@ export class AuthService {
 
   }
 
-  authenticateUser(user, returnUrl) {this.httpClient.post<
-    {token: string, expiresIn: number, role: Role, userId: string}
-    >(`${BACKEND_URL}login`, user).subscribe(res => {
+  authenticateUser(user, returnUrl) {
+    this.httpClient.post<{token: string, expiresIn: number, role: Role, userId: string}>
+      (`${BACKEND_URL}login`, user).subscribe(res => {
       const token = res.token;
       if (token) {
         const expiresInDuration = res.expiresIn;
@@ -43,9 +43,7 @@ export class AuthService {
         this.authStatusListener.next({isLoggedIn: true, email: user.email, role: this.role});
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-        console.log(expirationDate);
         this.saveAuthData(token, expirationDate, this.userId, this.role);
-        console.log(returnUrl);
         if (returnUrl) {
           // login successful so redirect to return url
           this.router.navigateByUrl(returnUrl);
@@ -154,4 +152,5 @@ export class AuthService {
       role
     };
   }
+
 }
