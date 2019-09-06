@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidateService } from '../../services/validate/validate.service';
-import { Router } from '@angular/router';
 import { UsersService } from 'src/app/user/services/users.service';
 import { Role } from '../../models/roles';
 import { AuthService } from '../../services/auth/auth.service';
@@ -11,31 +11,47 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  email: string;
-  password: string;
+
+  form: FormGroup;
   display: string;
   newRegisteredUser: {email: string; password: string; role: Role};
   constructor(private validateService: ValidateService,
               private userService: UsersService,
-              private router: Router,
               private authService: AuthService) { }
 
   ngOnInit() {
     this.display = 'none';
+    this.form = new FormGroup({
+      email: new FormControl(null, { validators: [Validators.required, Validators.email]}),
+      password: new FormControl(null, { validators: [Validators.required]})
+    });
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
   }
 
   onRegisterSubmit() {
+    console.log(this.form);
+    if (this.form.invalid) {
+      return;
+    }
+
     const user = {
-      email: this.email,
-      password: this.password,
+      email: this.form.value.email,
+      password: this.form.value.password,
       role: Role.user
     };
 
-    // Required Fields
-    if (!this.validateService.validateRegister(user)) {
-      alert('Fill in all fields'); // FIXME
-      return false;
-    }
+    // // Required Fields
+    // if (!this.validateService.validateRegister(user)) {
+    //   alert('Fill in all fields'); // FIXME
+    //   return false;
+    // }
 
     this.userService.registerUser(user)
       .subscribe(
