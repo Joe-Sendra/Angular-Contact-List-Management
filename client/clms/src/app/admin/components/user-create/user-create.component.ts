@@ -90,8 +90,11 @@ export class UserCreateComponent implements OnInit {
         role: this.form.value.role
       };
       this.userService.editUser(user).subscribe(res => {}, err => console.error(err));
-      console.log(this.returnUrl);
-      this.router.navigateByUrl(this.returnUrl);
+      if (this.returnUrl) {
+        this.router.navigateByUrl(this.returnUrl);
+      } else {
+        this.router.navigate(['/admin/users']);
+      }
     }
     this.form.reset({ role: Role.user });
   }

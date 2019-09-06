@@ -189,7 +189,11 @@ export class ContactCreateComponent implements OnInit {
       contact._id = this._contactID;
       console.log('Updating contact...');
       this.contactService.editContact(contact).subscribe(res => {}, err => console.error(err));
-      this.router.navigateByUrl(this.returnUrl);
+      if (this.returnUrl) {
+        this.router.navigateByUrl(this.returnUrl);
+      } else {
+        this.router.navigate(['/user/contacts']);
+      }
     }
     this.success = true;
   }
