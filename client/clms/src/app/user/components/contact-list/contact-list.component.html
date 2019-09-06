@@ -1,3 +1,16 @@
 <div *ngFor="let contact of contacts">
-  <app-contact-detail [contact]="contact"></app-contact-detail>
+  <app-contact-detail [contact]=contact></app-contact-detail>
+</div>
+
+<div *ngIf="contacts.length <= 0">
+  <br>
+  <h3>Get started by adding some contacts!</h3>
+  <div class="card bg-light mb-3" style="max-width: 20rem;">
+      <div class="card-header"><h2>Add Contacts</h2></div>
+      <div class="card-body">
+        <!-- <h4 class="card-title">Add contacts</h4> -->
+        <p class="card-text">Can add contacts</p>
+        <a class="btn btn-primary btn-block" [routerLink]="['/user/create']">Add contact</a>
+      </div>
+    </div>
 </div>
