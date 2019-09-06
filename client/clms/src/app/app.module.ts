@@ -23,6 +23,10 @@ import { ContactCreateComponent } from './user/components/contact-create/contact
 import { ContactDetailComponent } from './user/components/contact-detail/contact-detail.component';
 import { ContactsService } from './user/services/contacts.service';
 import { AuthInterceptor } from './shared/services/auth/auth-interceptor';
+import { ErrorInterceptor } from './error-interceptor';
+import { MatDialogModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorComponent } from './shared/components/error/error.component';
 
 
 
@@ -43,17 +47,23 @@ import { AuthInterceptor } from './shared/services/auth/auth-interceptor';
     ContactCreateComponent,
     ContactDetailComponent,
     RegisterComponent,
-    NavbarComponent
+    NavbarComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [ValidateService, AuthService, UsersService, ContactsService,
-  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
-  bootstrap: [MainComponent]
+  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+  {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
+  bootstrap: [MainComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }
