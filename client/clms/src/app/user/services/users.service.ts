@@ -10,16 +10,17 @@ const BACKEND_URL = environment.apiUrl + '/users/';
 export class UsersService {
   private _users = new BehaviorSubject<IUser[]>([]);
   private userDataStore: {users: IUser[] } = { users: [] };
-  readonly users = this._users.asObservable();
 
   constructor(private httpClient: HttpClient) {}
 
+  getUsersListener() {
+    return this._users.asObservable();
+  }
+
   // Adds a user to the DB
   registerUser(user): Observable<any> {
-    console.log(user);
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    console.log(BACKEND_URL);
     return this.httpClient.post(`${BACKEND_URL}register`, user, {headers});
   }
 
@@ -40,18 +41,15 @@ export class UsersService {
 
   deleteUser(userID: string) {
     this.httpClient.delete(`${BACKEND_URL}` + userID).subscribe(res => {
-      console.log(res);
       this.loadAll();
-    },
-    err => console.error(err));
+    });
   }
 
   loadAll() {
     this.httpClient.get<IUser[]>(`${BACKEND_URL}`).subscribe(allUsers => {
         this.userDataStore.users = allUsers;
         this._users.next(Object.assign({}, this.userDataStore).users);
-      }, err => console.log('Could not load users', err)
-    );
+      });
   }
 
 }

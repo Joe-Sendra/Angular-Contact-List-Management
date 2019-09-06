@@ -1,33 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Role } from 'src/app/shared/models/roles';
 import { UsersService } from 'src/app/user/services/users.service';
 import { IUser } from 'src/app/shared/models/user';
 
 @Component({
-  templateUrl: './user-create.component.html'
+  templateUrl: './user-create.component.html',
+  styleUrls: ['./user-create.component.css']
 })
 export class UserCreateComponent implements OnInit {
 
+  display: string;
+  newRegisteredUser: {email: string; password: string; role: Role};
   private _userID: string;
   form: FormGroup;
   mode = 'Create';
   user: IUser;
-  email: string;
-  password: string;
+
   role: Role = Role.user;
+  returnUrl: string;
 
   constructor(
     private userService: UsersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
-
+    this.display = 'none';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl;
     this.form = new FormGroup({
-      email: new FormControl(null, { validators: [Validators.required]}),
+      email: new FormControl(null, { validators: [Validators.required, Validators.email]}),
       password: new FormControl(null, {validators: [Validators.required]}),
       role: new FormControl(Role.user, {validators: [Validators.required]})
     });
@@ -35,7 +40,6 @@ export class UserCreateComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('userId')) {
         this.mode = 'Edit';
-        console.log('You are in Edit mode');
         this.form.controls.password.disable();
         this._userID = paramMap.get('userId');
         this.userService.getUser(this._userID).subscribe(userData => {
@@ -53,14 +57,20 @@ export class UserCreateComponent implements OnInit {
         });
       } else {
         this.mode = 'Create';
-        console.log('You are in Create mode');
       }
     });
   }
 
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
   onSaveUser() {
     if (this.form.invalid) {
-      console.log('this.form.invalid', this.form);
       return;
     }
     if (this.mode === 'Create') {
@@ -71,15 +81,11 @@ export class UserCreateComponent implements OnInit {
       };
       this.userService.registerUser(user).subscribe(
         res => {
+          this.display = 'block';
+          this.newRegisteredUser = user;
           console.log('TODO update user Subject (user added)', res);
-        },
-        err => {
-          if (!err.isUsernameAvailable) {
-            // TODO
-            console.log('TODO error for user already exists');
-          }
-        }
-      );
+          console.log('TODO give user success message');
+        });
     } else {
       const user = {
         _id: this._userID,
@@ -87,8 +93,17 @@ export class UserCreateComponent implements OnInit {
         role: this.form.value.role
       };
       this.userService.editUser(user).subscribe(res => {}, err => console.error(err));
+      if (this.returnUrl) {
+        this.router.navigateByUrl(this.returnUrl);
+      } else {
+        this.router.navigate(['/admin/users']);
+      }
     }
     this.form.reset({ role: Role.user });
+  }
+
+  onCloseDialog() {
+    this.display = 'none';
   }
 
 }

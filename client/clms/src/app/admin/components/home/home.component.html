@@ -1,8 +1,17 @@
-<h4>To view users</h4>
-<li>
-    <a [routerLink]="['/admin/users']">Users</a>
-</li>
-<h4>To add users</h4>
-<li>
-    <a [routerLink]="['/admin/create']">Add user</a>
-</li>
+<br>
+<div class="card bg-light bg-info mb-3" style="max-width: 20rem;">
+  <div class="card-header"><h2>View Users</h2></div>
+  <div class="card-body">
+    <!-- <h4 class="card-title">Total users:</h4> -->
+    <p class="card-text">Can view all/edit users</p>
+    <a class="btn btn-primary btn-block" [routerLink]="['/admin/users']">View</a>
+  </div>
+</div>
+<div class="card bg-light bg-info mb-3" style="max-width: 20rem;">
+  <div class="card-header"><h2>Add Users</h2></div>
+  <div class="card-body">
+    <!-- <h4 class="card-title">Add Users</h4> -->
+    <p class="card-text">Can add admin or standard users</p>
+    <a class="btn btn-primary btn-block" [routerLink]="['/admin/create']">Add</a>
+  </div>
+</div>

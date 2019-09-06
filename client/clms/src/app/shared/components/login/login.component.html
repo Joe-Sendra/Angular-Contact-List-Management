@@ -1,18 +1,15 @@
 <div class="container">
-  <div class="alert alert-danger" role="alert" [hidden]="hideError">
-      Incorrect username or password
-  </div>
   <h2 class="page-header">Login</h2>
   <form (ngSubmit)="onLoginSubmit()">
       <div class="form-group">
         <label for="email">Email</label>
-        <input #uName="ngModel" name="email" type="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone:true}" class="form-control" required/>
-        <!-- <div *ngIf="email.invalid && (email.dirty || email.touched)"
+        <input #Email="ngModel" name="email" type="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone:true}" class="form-control" required/>
+        <div *ngIf="Email.invalid && (Email.dirty || Email.touched)"
           class="alert alert-danger">
-          <div *ngIf="email.hasError('required')">
+          <div *ngIf="Email.hasError('required')">
             Email is required.
           </div>
-        </div> -->
+        </div>
       </div>
       <div class="form-group">
         <label for="password">Password</label>

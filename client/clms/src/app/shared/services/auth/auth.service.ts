@@ -30,9 +30,9 @@ export class AuthService {
 
   }
 
-  authenticateUser(user, returnUrl) {this.httpClient.post<
-    {token: string, expiresIn: number, role: Role, userId: string}
-    >(`${BACKEND_URL}login`, user).subscribe(res => {
+  authenticateUser(user, returnUrl) {
+    this.httpClient.post<{token: string, expiresIn: number, role: Role, userId: string}>
+      (`${BACKEND_URL}login`, user).subscribe(res => {
       const token = res.token;
       if (token) {
         const expiresInDuration = res.expiresIn;
@@ -43,9 +43,7 @@ export class AuthService {
         this.authStatusListener.next({isLoggedIn: true, email: user.email, role: this.role});
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-        console.log(expirationDate);
         this.saveAuthData(token, expirationDate, this.userId, this.role);
-        console.log(returnUrl);
         if (returnUrl) {
           // login successful so redirect to return url
           this.router.navigateByUrl(returnUrl);
@@ -73,34 +71,31 @@ export class AuthService {
   }
 
   deleteUser(user: IUser): Observable<any> {
-    // TODO need to verify role
     return this.httpClient.delete(`${BACKEND_URL}${user._id}`);
   }
 
   loggedIn() {
-    return !!localStorage.getItem('token'); // FIXME
+    return !!localStorage.getItem('token');
   }
 
   getToken() {
-    return localStorage.getItem('token'); // FIXME
+    return localStorage.getItem('token');
   }
 
   autoAuthUser() {
     const authInformation = this.getAuthData();
-    console.log(authInformation);
     if (!authInformation) {
       return;
     }
     const now = new Date();
     const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
-    console.log(expiresIn);
     if (expiresIn > 0) {
       this.authToken = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
       this.role = authInformation.role;
       this.setAuthTimer(expiresIn / 1000);
-      this.authStatusListener.next({isLoggedIn: true, email: null, role: null}); // FIXME need to return values instead of Null
+      this.authStatusListener.next({isLoggedIn: true, email: this.userId, role: this.role});
     }
   }
 
@@ -154,4 +149,5 @@ export class AuthService {
       role
     };
   }
+
 }
