@@ -7,16 +7,18 @@ import { UsersService } from 'src/app/user/services/users.service';
 import { IUser } from 'src/app/shared/models/user';
 
 @Component({
-  templateUrl: './user-create.component.html'
+  templateUrl: './user-create.component.html',
+  styleUrls: ['./user-create.component.css']
 })
 export class UserCreateComponent implements OnInit {
 
+  display: string;
+  newRegisteredUser: {email: string; password: string; role: Role};
   private _userID: string;
   form: FormGroup;
   mode = 'Create';
   user: IUser;
-  email: string;
-  password: string;
+
   role: Role = Role.user;
   returnUrl: string;
 
@@ -27,9 +29,10 @@ export class UserCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.display = 'none';
     this.returnUrl = this.route.snapshot.queryParams.returnUrl;
     this.form = new FormGroup({
-      email: new FormControl(null, { validators: [Validators.required]}),
+      email: new FormControl(null, { validators: [Validators.required, Validators.email]}),
       password: new FormControl(null, {validators: [Validators.required]}),
       role: new FormControl(Role.user, {validators: [Validators.required]})
     });
@@ -58,6 +61,14 @@ export class UserCreateComponent implements OnInit {
     });
   }
 
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
   onSaveUser() {
     if (this.form.invalid) {
       return;
@@ -70,6 +81,8 @@ export class UserCreateComponent implements OnInit {
       };
       this.userService.registerUser(user).subscribe(
         res => {
+          this.display = 'block';
+          this.newRegisteredUser = user;
           console.log('TODO update user Subject (user added)', res);
           console.log('TODO give user success message');
         });
@@ -87,6 +100,10 @@ export class UserCreateComponent implements OnInit {
       }
     }
     this.form.reset({ role: Role.user });
+  }
+
+  onCloseDialog() {
+    this.display = 'none';
   }
 
 }

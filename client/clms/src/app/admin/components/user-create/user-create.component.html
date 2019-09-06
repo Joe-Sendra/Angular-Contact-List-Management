@@ -7,6 +7,8 @@
           type="email"
           placeholder="Email"
           class="form-control"/>
+          <div class="alert alert-danger" *ngIf="(email.dirty || email.touched) && email.invalid && (form.controls['email'].errors.required)">required</div>
+            <div class="alert alert-danger" *ngIf="(email.dirty || email.touched) && email.invalid && form.controls['email'].errors.email">not an email</div>
       </div>
       <div class="form-group" *ngIf="mode==='Create'">
         <input
@@ -14,6 +16,7 @@
         type="password"
         placeholder="Password"
         class="form-control"/>
+        <div class="alert alert-danger" *ngIf="(password.dirty || password.touched) && password.invalid && (form.controls['password'].errors.required)">required</div>
       </div>
       <div class="form-group">
         <select formControlName="role" class="form-control">
@@ -21,6 +24,27 @@
             <option>admin</option>
         </select>
       </div>
-      <button class="btn btn-primary">Save User</button>
+      <button class="btn btn-primary" [disabled]="!form.valid">Save User</button>
   </form>
+  <!-- Modal -->
+  <div class="backdrop" [ngStyle]="{'display':display}"></div>
+  <div [ngStyle]="{'display':display}" class="modal" id="exampleModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Registration Successful!</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  You have successfully registered a new user!
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)=onCloseDialog()>Ok</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
