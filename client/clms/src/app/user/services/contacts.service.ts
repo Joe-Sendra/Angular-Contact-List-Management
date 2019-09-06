@@ -10,13 +10,14 @@ const BACKEND_URL = environment.apiUrl + '/contacts/';
 export class ContactsService {
   private _contacts = new BehaviorSubject<IContact[]>([]);
   private contactDataStore: {contacts: IContact[] } = { contacts: [] };
-  readonly contacts = this._contacts.asObservable();
 
   constructor(private httpClient: HttpClient) {}
 
+  getContactsListener() {
+    return this._contacts.asObservable();
+  }
+
   getContacts(): Observable<any> {
-    // const headers = new HttpHeaders();
-    // headers.set('Authorization', 'Bearer ' + authToken);
     return this.httpClient.get(`${BACKEND_URL}`);
   }
 
@@ -31,9 +32,7 @@ export class ContactsService {
       .subscribe(
         res => {
           this.loadAllContacts();
-        },
-        err => console.error(err)
-      );
+        });
   }
 
   editContact(contact): Observable<any> {
@@ -44,19 +43,15 @@ export class ContactsService {
 
   deleteContact(contactID: string) {
     this.httpClient.delete(`${BACKEND_URL}` + contactID).subscribe(res => {
-      console.log(res);
       this.loadAllContacts();
-    },
-    err => console.error(err));
+    });
   }
 
   loadAllContacts() {
     this.httpClient.get<IContact[]>(`${BACKEND_URL}`).subscribe(allContacts => {
       this.contactDataStore.contacts = allContacts;
-      console.log('_contacts next is called, should updated subscribers!!!');
       this._contacts.next(Object.assign({}, this.contactDataStore).contacts);
-      }, err => console.log('Could not load contacts', err)
-    );
+      });
   }
 
 }

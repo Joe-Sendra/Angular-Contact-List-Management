@@ -28,7 +28,6 @@ export class UserCreateComponent implements OnInit {
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams.returnUrl;
-    console.log(this.returnUrl);
     this.form = new FormGroup({
       email: new FormControl(null, { validators: [Validators.required]}),
       password: new FormControl(null, {validators: [Validators.required]}),
@@ -38,7 +37,6 @@ export class UserCreateComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('userId')) {
         this.mode = 'Edit';
-        console.log('You are in Edit mode');
         this.form.controls.password.disable();
         this._userID = paramMap.get('userId');
         this.userService.getUser(this._userID).subscribe(userData => {
@@ -56,14 +54,12 @@ export class UserCreateComponent implements OnInit {
         });
       } else {
         this.mode = 'Create';
-        console.log('You are in Create mode');
       }
     });
   }
 
   onSaveUser() {
     if (this.form.invalid) {
-      console.log('this.form.invalid', this.form);
       return;
     }
     if (this.mode === 'Create') {
@@ -75,14 +71,8 @@ export class UserCreateComponent implements OnInit {
       this.userService.registerUser(user).subscribe(
         res => {
           console.log('TODO update user Subject (user added)', res);
-        },
-        err => {
-          if (!err.isUsernameAvailable) {
-            // TODO
-            console.log('TODO error for user already exists');
-          }
-        }
-      );
+          console.log('TODO give user success message');
+        });
     } else {
       const user = {
         _id: this._userID,

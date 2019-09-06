@@ -19,7 +19,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(authData => {
-      console.log(authData);
       this.currentEmail = authData.email;
       this.currentRole = authData.role;
     });

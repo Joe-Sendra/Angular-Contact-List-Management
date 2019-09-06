@@ -61,10 +61,8 @@ export class ContactCreateComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('contactId')) {
         this.mode = 'Edit';
-        console.log('You are in Edit mode');
         this._contactID = paramMap.get('contactId');
         this.contactService.getContact(this._contactID).subscribe((contactData: IContact) => {
-          console.log(contactData);
           this.contact = {
             _id: contactData[0]._id,
             address: {
@@ -131,15 +129,12 @@ export class ContactCreateComponent implements OnInit {
       });
      } else {
         this.mode = 'Create';
-        console.log('You are in Create mode');
       }
     });
   }
 
   onSaveContact() {
-    console.log('this.mode: ', this.mode);
     if (this.form.invalid) {
-      console.log('this.form.invalid', this.form);
       return;
     }
     const contact = {
@@ -181,13 +176,10 @@ export class ContactCreateComponent implements OnInit {
         other: this.form.value.phoneOther
       }
     };
-    console.log('this.mode: ', this.mode);
     if (this.mode === 'Create') {
-      console.log('Creating contact...');
       this.contactService.addContact(contact);
     } else {
       contact._id = this._contactID;
-      console.log('Updating contact...');
       this.contactService.editContact(contact).subscribe(res => {}, err => console.error(err));
       if (this.returnUrl) {
         this.router.navigateByUrl(this.returnUrl);

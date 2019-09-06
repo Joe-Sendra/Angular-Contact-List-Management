@@ -17,7 +17,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   constructor(private userService: UsersService, private router: Router) { }
 
   ngOnInit() {
-    this.userSubscription = this.userService.users.subscribe(
+    this.userSubscription = this.userService.getUsersListener().subscribe(
       updatedUsers => { this.users = updatedUsers; });
 
     this.userService.getUsers().pipe(take(1)).subscribe(usersData => {

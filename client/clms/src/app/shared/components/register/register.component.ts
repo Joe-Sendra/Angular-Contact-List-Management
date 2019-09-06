@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit {
     this.userService.registerUser(user)
       .subscribe(
         res => {
-          console.log('TODO update user Subject (user added)', res);
           localStorage.setItem('id_token', res.token);
           this.display = 'block';
           this.newRegisteredUser = user;
