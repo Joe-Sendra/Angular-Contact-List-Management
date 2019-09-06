@@ -5,11 +5,12 @@
 <div *ngIf="contacts.length <= 0">
   <br>
   <h3>Get started by adding some contacts!</h3>
+  <br>
   <div class="card bg-light mb-3" style="max-width: 20rem;">
       <div class="card-header"><h2>Add Contacts</h2></div>
       <div class="card-body">
         <!-- <h4 class="card-title">Add contacts</h4> -->
-        <p class="card-text">Can add contacts</p>
+        <p class="card-text">Your contacts will appear here once you create some</p>
         <a class="btn btn-primary btn-block" [routerLink]="['/user/create']">Add contact</a>
       </div>
     </div>
