@@ -17,6 +17,9 @@ const cors = require('cors');
 // Need to import so that we can connect the database to the nodeJS server
 const mongoose = require('mongoose');
 
+// Used for environment variables
+require('dotenv').config();
+
 // Need to import our routes
 const contactRoutes = require('./routes/contacts');
 const userRoutes = require('./routes/users');
@@ -28,10 +31,7 @@ const app = express();
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
-mongoose.connect(
-  'mongodb+srv://JoeyDevs:' +
-  process.env.MONGO_ATLAS_PW +
-  '@cluster0-aihio.mongodb.net/CLMS?retryWrites=true&w=majority')
+mongoose.connect(process.env.DB_URL)
   .then(() => {
     console.log('Connected to database!');
   })
@@ -61,5 +61,21 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/contacts', contactRoutes);
 app.use('/api/users', userRoutes);
+
+app.use((req, res, next) => {
+  const error = new Error(`Not Found - ${req.originalUrl}`);
+  res.status(404);
+  next(error);
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use((error, req, res, next) => {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode);
+  res.json({
+    message: error.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
+  });
+});
 
 module.exports = app;

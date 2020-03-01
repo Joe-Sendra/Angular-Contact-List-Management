@@ -5,7 +5,8 @@ import { ContactsService } from '../../services/contacts.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
-  templateUrl: './contact-create.component.html'
+  templateUrl: './contact-create.component.html',
+  styleUrls: ['./contact-create.component.css']
 })
 export class ContactCreateComponent implements OnInit {
 
