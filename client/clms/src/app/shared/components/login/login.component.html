@@ -3,23 +3,20 @@
   <form (ngSubmit)="onLoginSubmit()">
       <div class="form-group">
         <label for="email">Email</label>
-        <input #Email="ngModel" name="email" type="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone:true}" class="form-control" required/>
-        <div *ngIf="Email.invalid && (Email.dirty || Email.touched)"
-          class="alert alert-danger">
-          <div *ngIf="Email.hasError('required')">
-            Email is required.
-          </div>
+        <input #Email="ngModel" name="email" type="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone:true}" class="form-control" required
+        [ngClass]="{ 'is-invalid': Email.invalid && Email.touched }"/>
+        <div *ngIf="Email.invalid && Email.touched" class="invalid-feedback">
+          <div *ngIf="Email.errors.required">Email is required</div>
+          <div *ngIf="Email.errors.email">Email format is incorrect</div>
         </div>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input #uPass="ngModel" name="password" type="password" placeholder="Password" [(ngModel)]="password" [ngModelOptions]="{standalone:true}" class="form-control" required/>
-        <div *ngIf="uPass.invalid && (uPass.dirty || uPass.touched)"
-        class="alert alert-danger">
-        <div *ngIf="uPass.hasError('required')">
-          Password is required.
+        <input #uPass="ngModel" name="password" type="password" placeholder="Password" [(ngModel)]="password" [ngModelOptions]="{standalone:true}" class="form-control" required
+        [ngClass]="{ 'is-invalid': uPass.invalid && uPass.touched }"/>
+        <div *ngIf="uPass.invalid && uPass.touched" class="invalid-feedback">
+          <div *ngIf="uPass.errors.required">Password is required</div>
         </div>
-      </div>
       </div>
       <input type="submit" value="Submit" class="btn btn-primary"/>
   </form>
